@@ -1,6 +1,7 @@
 {
-    "cSpell.words": [
-        "discordjs",
-        "ytdl"
-    ]
+  "cSpell.words": ["audioonly", "discordjs", "monke", "ytdl"],
+  "editor.formatOnSave": true,
+  "files.exclude": {
+    "node_modules/": true
+  }
 }
