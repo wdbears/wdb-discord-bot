@@ -7,15 +7,21 @@
   "author": "Ahmad Raza <razatastic@gmail.com>",
   "license": "MIT",
   "private": false,
+  "scripts": {
+    "start": "nodemon --exec yarn run babel-node -- ./src/index.js",
+    "babel-node": "babel-node --presets='@babel/preset-env' --ignore='foo|bar|baz'"
+  },
   "dependencies": {
     "@discordjs/opus": "^0.3.2",
     "discord.js": "^12.3.1",
     "dotenv": "^8.2.0",
     "ffmpeg-static": "^4.2.7",
-    "nodemon": "^2.0.5",
     "ytdl-core": "^3.4.1"
   },
-  "scripts": {
-    "start": "nodemon index.js"
+  "devDependencies": {
+    "@babel/core": "^7.12.1",
+    "@babel/node": "^7.12.1",
+    "@babel/preset-env": "^7.12.1",
+    "nodemon": "^2.0.5"
   }
 }
