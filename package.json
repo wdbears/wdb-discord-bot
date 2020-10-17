@@ -35,5 +35,15 @@
   },
   "lint-staged": {
     "*.{js,css,md}": "prettier --write"
+  },
+  "prettier": {
+    "trailingComma": "es5",
+    "semi": false,
+    "singleQuote": true
+  },
+  "babel": {
+    "presets": [
+      "@babel/preset-env"
+    ]
   }
 }
