@@ -1,8 +1,0 @@
-{
-  "cSpell.words": ["audioonly", "discordjs", "monke", "ytdl"],
-  "editor.formatOnSave": true,
-  "files.exclude": {
-    "node_modules/": true
-  },
-  "prettier.packageManager": "yarn"
-}
