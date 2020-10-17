@@ -16,7 +16,7 @@ client.on('message', async (message) => {
     const messageIgnoreCase = message.content.toUpperCase()
 
     switch (messageIgnoreCase) {
-      case 'MONKE':
+      case 'MONKE': {
         const connection = await message.member.voice.channel.join()
         const dispatcher = connection.play(
           ytdl('https://www.youtube.com/watch?v=Xz1iSC-UFtk', {
@@ -30,6 +30,7 @@ client.on('message', async (message) => {
           message.member.voice.channel.leave()
         })
         break
+      }
 
       default:
         break
