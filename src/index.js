@@ -1,8 +1,37 @@
 import dotenv from 'dotenv';
 import Discord from 'discord.js';
+import * as admin from 'firebase-admin';
 // import ytdl from 'ytdl-core';
 
 dotenv.config(); // Load instance variables
+
+// Connect to Firebase
+admin.initializeApp({
+  credential: admin.credential.applicationDefault(),
+  databaseURL: 'https://wdb-discord-bot.firebaseio.com',
+});
+
+const db = admin.database();
+
+const ref = db.ref();
+
+const commandKeywords = new Map();
+
+ref.on(
+  'value',
+  (snapshot) => {
+    snapshot.forEach((collection) => {
+      // const { key } = collection;
+      collection.forEach((val) => {
+        // console.log(val);
+        commandKeywords.set(val.key, val.val());
+      });
+    });
+  },
+  (errorObject) => {
+    console.log(`The read failed: ${errorObject.code}`);
+  }
+);
 
 const prefix = '!'; // Prefix for bot trigger command
 
@@ -17,6 +46,10 @@ client.on('message', async (message) => {
   if (!message.content.startsWith(prefix) || message.author.bot) return;
   const args = message.content.slice(prefix.length).trim().split(/ +/);
   const command = args.shift().toLowerCase();
+
+  if (commandKeywords.has(command)) {
+    return message.channel.send(commandKeywords.get(command));
+  }
 
   if (command === 'args-info') {
     if (!args.length) {
