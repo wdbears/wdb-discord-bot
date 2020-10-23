@@ -7,7 +7,7 @@ dotenv.config(); // Load instance variables
 
 // Connect to Firebase
 admin.initializeApp({
-  credential: admin.credential.applicationDefault(),
+  credential: admin.credential.cert(JSON.parse(process.env.FIREBASE_CONFIG)),
   databaseURL: 'https://wdb-discord-bot.firebaseio.com',
 });
 const db = admin.database();
