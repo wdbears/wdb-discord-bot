@@ -40,15 +40,13 @@ const commandFiles = fs
   .filter((file) => file.endsWith('.js'));
 
 commandFiles.forEach((file) => {
-  // eslint-disable-next-line global-require
+  // eslint-disable-next-line global-require, import/no-dynamic-require
   const command = require(`./commands/${file}`);
   client.commands.set(command.name, command);
-  console.log(client.commands);
 });
 
 client.once('ready', () => {
   console.log('Nom Nom is ready to munch...');
-  console.log('Nappy types Monke speaks');
 });
 
 client.on('message', async (message) => {
