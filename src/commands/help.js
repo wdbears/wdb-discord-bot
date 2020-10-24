@@ -1,4 +1,4 @@
-const prefix = '?';
+import { prefix } from '../config/botConfig.json';
 
 module.exports = {
   name: 'help',
