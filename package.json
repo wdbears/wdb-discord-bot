@@ -12,7 +12,7 @@
     "babel-node": "babel-node --presets='@babel/preset-env' --ignore='foo|bar|baz'",
     "lint": "yarn prettier --write .",
     "docker-build": "docker build -t razatastic/wdb-discord-bot .",
-    "docker-run": "docker run -p 8080:8080 -d razatastic/wdb-discord-bot"
+    "docker-run": "docker run -p 3000:3000 -d razatastic/wdb-discord-bot"
   },
   "dependencies": {
     "@discordjs/opus": "^0.3.2",
