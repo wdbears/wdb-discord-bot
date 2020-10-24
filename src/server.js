@@ -42,9 +42,12 @@ client.on('message', async (message) => {
   const command = client.commands.get(commandName);
 
   if (command.args && !args.length) {
-    return message.channel.send(
-      `You didn't provide any arguments, ${message.author}!`
-    );
+    let reply = `You didn't provide any arguments, ${message.author}`;
+
+    if (command.usage) {
+      reply += `\nThe proper usage would be: \`${prefix}${command.name} ${command.usage}\``;
+    }
+    return message.channel.send(reply);
   }
 
   try {
