@@ -29,8 +29,10 @@ client.once('ready', () => {
 
 client.on('message', async (message) => {
   if (!message.content.startsWith(prefix) || message.author.bot) return;
+
   const args = message.content.slice(prefix.length).trim().split(/ +/);
   const commandName = args.shift().toLowerCase();
+
   if (commandKeywords.has(commandName)) {
     return message.channel.send(commandKeywords.get(commandName));
   }
@@ -38,6 +40,12 @@ client.on('message', async (message) => {
   if (!client.commands.has(commandName)) return;
 
   const command = client.commands.get(commandName);
+
+  if (command.args && !args.length) {
+    return message.channel.send(
+      `You didn't provide any arguments, ${message.author}!`
+    );
+  }
 
   try {
     command.execute(message, args);
