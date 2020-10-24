@@ -4,7 +4,7 @@ export default (FIREBASE_CONFIG) => {
   // Connect to Firebase
   admin.initializeApp({
     credential: admin.credential.cert(JSON.parse(FIREBASE_CONFIG)),
-    databaseURL: 'https://wdb-discord-bot.firebaseio.com',
+    databaseURL: 'https://wdb-discord-bot.firebaseio.com'
   });
   const db = admin.database();
   const ref = db.ref();

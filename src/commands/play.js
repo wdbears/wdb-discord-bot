@@ -9,5 +9,5 @@ module.exports = {
     dispatcher.on('finish', () => {
       dispatcher.destroy();
     });
-  },
+  }
 };

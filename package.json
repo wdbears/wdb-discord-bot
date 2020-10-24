@@ -45,7 +45,7 @@
     "*.{js,css,md}": "prettier --write"
   },
   "prettier": {
-    "trailingComma": "es5",
+    "trailingComma": "none",
     "singleQuote": true
   },
   "babel": {
