@@ -53,7 +53,7 @@ module.exports = {
   usage: '[item name]',
   async execute(message, args) {
     try {
-      const keyword = args.toString().replaceAll(',', ' ');
+      const keyword = args.toString().replace(/,/g, ' ');
       if (keyword) {
         const items = await fetchFromRunescape(keyword);
 
