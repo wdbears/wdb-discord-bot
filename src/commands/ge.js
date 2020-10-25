@@ -2,10 +2,10 @@ import cheerio from 'cheerio';
 import fetch from 'node-fetch';
 import Discord from 'discord.js';
 
-async function fetchfromRuneScape(itemQuery) {
-  const itemdbURL = 'https://secure.runescape.com/m=itemdb_rs/results';
+const fetchFromRunescape = async (itemQuery) => {
+  const geDatabase = 'https://secure.runescape.com/m=itemdb_rs/results';
   try {
-    const response = await fetch(itemdbURL, {
+    const response = await fetch(geDatabase, {
       method: 'POST',
       headers: {
         'user-agent':
@@ -44,17 +44,18 @@ async function fetchfromRuneScape(itemQuery) {
   } catch (error) {
     console.error(error);
   }
-}
+};
 
 module.exports = {
   name: 'ge',
-  description: 'Fetch grand exchange price from a given keyword.',
+  description: 'Fetch Grand Exchange price for a given item.',
   args: true,
+  usage: '[item name]',
   async execute(message, args) {
     try {
       const keyword = args.toString().replaceAll(',', ' ');
       if (keyword) {
-        const items = await fetchfromRuneScape(keyword);
+        const items = await fetchFromRunescape(keyword);
 
         if (!Array.isArray(items) || !items.length) {
           message.channel.send('No items were found for '.concat(keyword));
