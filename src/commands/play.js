@@ -18,6 +18,7 @@ module.exports = {
   description: 'Play the audio from the given URL.',
   args: true,
   usage: '<URL>',
+  aliases: ['p'],
   async execute(message, args) {
     try {
       const url = args[0];
