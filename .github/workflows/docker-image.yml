@@ -15,7 +15,7 @@ jobs:
     steps:
     - uses: actions/checkout@v2
     - name: Build the Docker image
+      run: docker-compose up
     - env:
         DISCORD_CLIENT_ID: ${{ secrets.DISCORD_CLIENT_ID }}
         FIREBASE_CONFIG: ${{ secrets.FIREBASE_CONFIG }}
-      run: docker-compose up
