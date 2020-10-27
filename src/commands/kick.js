@@ -1,6 +1,7 @@
 export const name = 'kick';
 export const description =
   'Kick the mentioned member out of the voice channel.';
+export const aliases = ['kick'];
 
 export async function execute(message) {
   if (message.channel.type === 'DM') {
