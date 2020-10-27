@@ -8,7 +8,8 @@
   "license": "MIT",
   "private": false,
   "scripts": {
-    "start": "nodemon --exec yarn run babel-node -- ./src/server.js",
+    "start": "yarn run build && node dist/server.js",
+    "dev": "nodemon --exec yarn run babel-node -- ./src/server.js",
     "babel-node": "babel-node --presets='@babel/preset-env' --ignore='foo|bar|baz'",
     "lint": "yarn prettier --write .",
     "build": "babel src -d dist --copy-files"
@@ -16,15 +17,18 @@
   "dependencies": {
     "@discordjs/opus": "^0.3.2",
     "cheerio": "^1.0.0-rc.3",
+    "core-js": "^3.6.5",
     "discord.js": "^12.3.1",
     "dotenv": "^8.2.0",
     "ffmpeg-static": "^4.2.7",
     "firebase-admin": "^9.2.0",
     "node-fetch": "^2.6.1",
+    "regenerator-runtime": "^0.13.7",
     "ytdl-core": "^3.4.1"
   },
   "devDependencies": {
-    "@babel/core": "^7.12.1",
+    "@babel/cli": "^7.12.1",
+    "@babel/core": "^7.12.3",
     "@babel/node": "^7.12.1",
     "@babel/preset-env": "^7.12.1",
     "eslint": "^7.11.0",

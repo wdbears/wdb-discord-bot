@@ -1,3 +1,5 @@
+import 'core-js/stable';
+import 'regenerator-runtime/runtime';
 import dotenv from 'dotenv';
 import Discord from 'discord.js';
 import fs from 'fs';
