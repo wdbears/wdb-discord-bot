@@ -10,11 +10,11 @@ export async function execute(message) {
   }
 
   if (!message.mentions.members.size) {
-    return message.reply('You need to tag a user in order to kick them!');
+    return message.reply('you need to tag a user in order to kick them!');
   }
 
   if (!message.member.hasPermission('KICK_MEMBERS')) {
-    message.channel.send('You do not have permission to kick.');
+    message.reply('you do not have permission to kick.');
     return;
   }
 
@@ -25,7 +25,7 @@ export async function execute(message) {
   } catch (error) {
     const wdbErrorObj = {
       command: 'kick',
-      message: 'There was an error trying to kick!'
+      message: 'there was an error trying to kick!'
     };
 
     throw wdbErrorObj;

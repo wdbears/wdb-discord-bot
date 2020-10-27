@@ -5,7 +5,7 @@ async function joinVoiceChannel(message) {
   try {
     return await message.member.voice.channel.join();
   } catch (err) {
-    throw new Error('You must be in a voice channel to play media!');
+    throw new Error('you must be in a voice channel to play media!');
   }
 }
 
@@ -25,7 +25,7 @@ export async function execute(message, args) {
     }
 
     const url = args[0];
-    if (!ytdl.validateURL(url)) throw new Error('You must enter a valid url.');
+    if (!ytdl.validateURL(url)) throw new Error('you must enter a valid url.');
 
     if (url && dispatcher === undefined) {
       connection = await joinVoiceChannel(message);
