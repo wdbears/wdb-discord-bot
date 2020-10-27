@@ -10,7 +10,7 @@
   "scripts": {
     "start": "yarn run build && node dist/server.js",
     "dev": "nodemon --exec yarn run babel-node -- ./src/server.js",
-    "babel-node": "babel-node --presets='@babel/preset-env' --ignore='foo|bar|baz'",
+    "babel-node": "babel-node --ignore='foo|bar|baz'",
     "lint": "yarn prettier --write .",
     "build": "babel src -d dist --copy-files"
   },
@@ -48,38 +48,5 @@
   },
   "lint-staged": {
     "*.{js,css,md}": "prettier --write"
-  },
-  "prettier": {
-    "trailingComma": "none",
-    "singleQuote": true
-  },
-  "babel": {
-    "presets": [
-      "@babel/preset-env"
-    ]
-  },
-  "eslintConfig": {
-    "env": {
-      "es2021": true,
-      "node": true
-    },
-    "extends": [
-      "airbnb-base",
-      "prettier"
-    ],
-    "parserOptions": {
-      "ecmaVersion": 12,
-      "sourceType": "module"
-    },
-    "rules": {
-      "prettier/prettier": [
-        "error"
-      ],
-      "no-console": 0,
-      "consistent-return": "off"
-    },
-    "plugins": [
-      "prettier"
-    ]
   }
 }
