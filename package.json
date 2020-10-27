@@ -8,11 +8,11 @@
   "license": "MIT",
   "private": false,
   "scripts": {
-    "start": "yarn run build && node dist/server.js",
-    "dev": "nodemon --exec yarn run babel-node -- ./src/server.js",
+    "start": "nodemon --exec yarn run babel-node -- ./src/server.js",
     "babel-node": "babel-node --ignore='foo|bar|baz'",
     "lint": "yarn prettier --write .",
-    "build": "babel src -d dist --copy-files"
+    "build": "babel src -d dist --copy-files",
+    "serve": "node dist/server.js"
   },
   "dependencies": {
     "@discordjs/opus": "^0.3.2",
