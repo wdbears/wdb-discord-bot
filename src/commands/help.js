@@ -1,4 +1,4 @@
-import { prefix } from '../config/botConfig.json';
+import prefix from '../config/botConfig';
 
 module.exports = {
   name: 'help',
