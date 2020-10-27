@@ -22,4 +22,4 @@ RUN apk add --update \
 COPY . .
 
 # Run
-CMD [ "yarn", "start" ]
+CMD [ "yarn", "start-prod" ]
