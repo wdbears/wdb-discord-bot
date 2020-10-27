@@ -4,7 +4,7 @@ import dotenv from 'dotenv';
 import Discord from 'discord.js';
 import fs from 'fs';
 import fbDatabaseConnect from './config/fbconfig';
-import { prefix } from './config/botConfig.json';
+import prefix from './config/botConfig';
 
 dotenv.config(); // Load instance variables
 
