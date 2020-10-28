@@ -21,5 +21,7 @@ RUN apk add --update \
 # Bundle app source
 COPY . .
 
+EXPOSE 8080
+
 # Run
 CMD [ "yarn", "start-prod" ]
