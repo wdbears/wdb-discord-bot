@@ -13,10 +13,11 @@ export async function execute(message) {
     return message.reply('you need to tag a user in order to kick them!');
   }
 
-  if (!message.member.hasPermission('KICK_MEMBERS')) {
-    message.reply('you do not have permission to kick.');
-    return;
-  }
+  const bCanKick = message.member.roles.cache.some(
+    (r) => r.id === '484567203169959967' // Admins role id.
+  );
+
+  if (!bCanKick) return message.reply('you do not have permission to kick.');
 
   const taggedMember = message.mentions.members.first();
   try {
