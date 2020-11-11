@@ -9,7 +9,7 @@ import prefix from './config/botConfig';
 
 dotenv.config(); // Load instance variables
 
-// Setup listener on port 8080 (required for Google Cloud Run deployment)
+// Setup listener on port 8080 (required for cloud deployment)
 const app = express();
 const port = 8080;
 
