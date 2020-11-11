@@ -1,6 +1,7 @@
 import 'core-js/stable';
 import 'regenerator-runtime/runtime';
 import dotenv from 'dotenv';
+import express from 'express';
 import Discord from 'discord.js';
 import fs from 'fs';
 import fbDatabaseConnect from './config/fbConfig';
@@ -8,7 +9,20 @@ import prefix from './config/botConfig';
 
 dotenv.config(); // Load instance variables
 
-const commandKeywords = fbDatabaseConnect(process.env.FIREBASE_CONFIG); // Cache bot commands from Firebase
+// Setup listener on port 8080 (required for Google Cloud Run deployment)
+const app = express();
+const port = 8080;
+
+app.get('/', (req, res) => {
+  res.send('Nom Nom is running fine!');
+});
+
+app.listen(port, () => {
+  console.log(`Nom Nom listening at http://localhost:${port}`);
+});
+
+// Cache bot commands from Firebase
+const commandKeywords = fbDatabaseConnect(process.env.FIREBASE_CONFIG);
 
 // Create an instance of a Discord client
 const client = new Discord.Client();
