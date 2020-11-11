@@ -46,12 +46,15 @@ client.once('ready', () => {
 client.on('message', async (message) => {
   if (!message.content.startsWith(prefix) || message.author.bot) return;
 
+  // Format user-inputted command
   const args = message.content.slice(prefix.length).trim().split(/ +/);
   const commandName = args.shift().toLowerCase();
 
+  // Check if the command exists in the Firebase commands list
   if (commandKeywords.has(commandName))
     return message.channel.send(commandKeywords.get(commandName));
 
+  // Check if the command exists in the commands directory
   const command =
     client.commands.get(commandName) ||
     client.commands.find(
