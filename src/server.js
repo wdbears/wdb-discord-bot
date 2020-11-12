@@ -16,7 +16,7 @@ const app = express();
 const port = 8080;
 
 app.get('/', (req, res) => {
-  res.send('Nom Nom is running fine!');
+  res.send('Nom Nom is running properly!');
 });
 
 app.listen(port, () => {
