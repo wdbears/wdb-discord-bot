@@ -1,4 +1,4 @@
-import prefix from '../config/botConfig';
+import prefix from '../config';
 
 module.exports = {
   name: 'help',
