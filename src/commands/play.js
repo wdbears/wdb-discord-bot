@@ -5,6 +5,8 @@ export const name = 'play';
 export const description = 'Play the audio from the given URL.';
 export const usage = '<URL>';
 export const aliases = ['p'];
+export const guildOnly = true;
+
 export async function execute(message, args) {
   try {
     let connection = message.client.voice.connections.first();

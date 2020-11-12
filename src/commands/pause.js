@@ -1,5 +1,6 @@
 export const name = 'pause';
 export const description = 'Pause the currently playing audio';
+export const guildOnly = true;
 
 export async function execute(message) {
   try {
