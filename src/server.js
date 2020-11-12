@@ -24,17 +24,15 @@ app.listen(port, () => {
 });
 
 // Establish connection to Firebase
-const admin = fbConfig(process.env.FIREBASE_CONFIG);
-
-// Cache bot commands from Firebase
-const commandKeywords = fbDatabase(admin);
-
-fbStorage(admin);
+const fbInstance = fbConfig(process.env.FIREBASE_CONFIG);
+const commandKeywords = fbDatabase(fbInstance); // Cache bot commands from Firebase
+fbStorage(fbInstance); // Connect to firebase storage
 
 // Create an instance of a Discord client
 const client = new Discord.Client();
 client.commands = new Discord.Collection();
 
+// Populate commands from commands directory
 const commandFiles = fs
   .readdirSync('./src/commands')
   .filter((file) => file.endsWith('.js'));
@@ -49,7 +47,7 @@ client.once('ready', () => {
   console.log('Nom Nom is ready to munch...');
 });
 
-/** Command validation and handler */
+// Command validation and handler
 client.on('message', async (message) => {
   if (!message.content.startsWith(prefix) || message.author.bot) return;
 
