@@ -1,13 +1,5 @@
 import ytdl from 'ytdl-core';
-
-// Returns the connection object on successful join
-async function joinVoiceChannel(message) {
-  try {
-    return await message.member.voice.channel.join();
-  } catch (err) {
-    throw new Error('you must be in a voice channel to play media!');
-  }
-}
+import { joinVoiceChannel } from '../functions';
 
 export const name = 'play';
 export const description = 'Play the audio from the given URL.';
