@@ -1,11 +1,13 @@
 import 'core-js/stable';
 import 'regenerator-runtime/runtime';
+
 import dotenv from 'dotenv';
 import express from 'express';
 import Discord from 'discord.js';
 import fs from 'fs';
-import fbDatabaseConnect from './config/fbConfig';
-import prefix from './config/botConfig';
+
+import { fbConfig, prefix } from './config';
+import { fbDatabase, fbStorage } from './firebase';
 
 dotenv.config(); // Load instance variables
 
@@ -21,8 +23,13 @@ app.listen(port, () => {
   console.log(`Nom Nom listening at http://localhost:${port}`);
 });
 
+// Establish connection to Firebase
+const admin = fbConfig(process.env.FIREBASE_CONFIG);
+
 // Cache bot commands from Firebase
-const commandKeywords = fbDatabaseConnect(process.env.FIREBASE_CONFIG);
+const commandKeywords = fbDatabase(admin);
+
+fbStorage(admin);
 
 // Create an instance of a Discord client
 const client = new Discord.Client();
