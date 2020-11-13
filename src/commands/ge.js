@@ -47,7 +47,7 @@ const fetchFromRunescape = async (itemQuery) => {
 };
 
 export const name = 'ge';
-export const description = 'Fetch Grand Exchange price for a given item.';
+export const description = 'Fetch the Grand Exchange price for a given item.';
 export const usage = '[item name]';
 export const argsRequired = true;
 
