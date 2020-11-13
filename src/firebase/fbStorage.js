@@ -1,9 +1,7 @@
 async function listFilesByPrefix(storageRef, prefix, delimiter) {
   const options = { prefix };
 
-  if (delimiter) {
-    options.delimiter = delimiter;
-  }
+  if (delimiter) options.delimiter = delimiter;
 
   const [files] = await storageRef.getFiles(options);
 
