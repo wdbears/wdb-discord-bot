@@ -1,7 +1,7 @@
 /**
  * Attempt to join a voice channel successfully
  * @param {string} message - The user inputted message
- * @returns {object} - The connection object
+ * @returns {Object} - The connection object
  */
 export default async function joinVoiceChannel(message) {
   try {
