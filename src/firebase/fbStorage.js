@@ -3,12 +3,12 @@ async function listFilesByPrefix(storageRef, prefix, delimiter) {
 
   if (delimiter) options.delimiter = delimiter;
 
-  const [files] = await storageRef.getFiles(options);
+  // const [files] = await storageRef.getFiles(options);
 
-  console.log('Files:');
-  files.forEach((file) => {
-    console.log(file.name);
-  });
+  // console.log('Files:');
+  // files.forEach((file) => {
+  //   console.log(file.name);
+  // });
 }
 
 export default (admin) => {
