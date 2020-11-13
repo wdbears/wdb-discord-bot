@@ -46,39 +46,37 @@ const fetchFromRunescape = async (itemQuery) => {
   }
 };
 
-module.exports = {
-  name: 'ge',
-  description: 'Fetch Grand Exchange price for a given item.',
-  args: true,
-  usage: '[item name]',
-  async execute(message, args) {
-    try {
-      const keyword = args.toString().replace(/,/g, ' ');
-      if (keyword) {
-        const items = await fetchFromRunescape(keyword);
+export const name = 'ge';
+export const description = 'Fetch the Grand Exchange price for a given item.';
+export const usage = '[item name]';
+export const argsRequired = true;
 
-        if (!Array.isArray(items) || !items.length) {
-          message.channel.send('No items were found for '.concat(keyword));
-        }
+export async function execute(message, args) {
+  try {
+    const keyword = args.toString().replace(/,/g, ' ');
+    if (keyword) {
+      const items = await fetchFromRunescape(keyword);
 
-        if (items.length) {
-          const discordEmbed = new Discord.MessageEmbed()
-            .setColor('#0099ff')
-            .setTitle('Grand Exchange Prices')
-            .setTimestamp()
-            .setFooter('Nom Nom');
-          items.forEach((item) => {
-            discordEmbed.addField(item.name, item.value);
-          });
+      if (!Array.isArray(items) || !items.length)
+        message.channel.send('No items were found for '.concat(keyword));
 
-          message.channel.send(discordEmbed);
-        }
+      if (items.length) {
+        const discordEmbed = new Discord.MessageEmbed()
+          .setColor('#0099ff')
+          .setTitle('Grand Exchange Prices')
+          .setTimestamp()
+          .setFooter('Nom Nom');
+        items.forEach((item) => {
+          discordEmbed.addField(item.name, item.value);
+        });
+
+        message.channel.send(discordEmbed);
       }
-    } catch (error) {
-      console.error(error);
-      message.channel.send(
-        'There was an error trying to fetch the Grand Exchange value.'
-      );
     }
+  } catch (error) {
+    console.error(error);
+    message.channel.send(
+      'There was an error trying to fetch the Grand Exchange value.'
+    );
   }
-};
+}
