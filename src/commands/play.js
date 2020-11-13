@@ -31,7 +31,6 @@ export async function execute(message, args) {
       });
     }
   } catch (error) {
-    // create WdbErrorObj based upon func
     const wdbErrorObj = {
       command: 'play',
       message: error.message

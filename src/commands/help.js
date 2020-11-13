@@ -10,6 +10,7 @@ module.exports = {
     const data = [];
     const { commands } = message.client;
 
+    // List all commands if no command is specified
     if (!args.length) {
       data.push("Here's a list of all my commands:");
       data.push(commands.map((command) => command.name).join(', '));
