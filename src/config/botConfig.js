@@ -1,5 +1,6 @@
 import Discord from 'discord.js';
 import fs from 'fs';
+import { WdbError } from '../util';
 
 export const prefix = '?';
 
@@ -62,8 +63,10 @@ export default (commandKeywords) => {
     try {
       await command.execute(message, args);
     } catch (error) {
+      if (error instanceof WdbError) {
+        message.reply(error.reply);
+      }
       console.error(error);
-      message.reply(error.message);
     }
   });
 

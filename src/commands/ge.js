@@ -1,6 +1,7 @@
 import cheerio from 'cheerio';
 import fetch from 'node-fetch';
 import Discord from 'discord.js';
+import { WdbError } from '../util';
 
 const fetchFromRunescape = async (itemQuery) => {
   const geDatabase = 'https://secure.runescape.com/m=itemdb_rs/results';
@@ -74,9 +75,6 @@ export async function execute(message, args) {
       }
     }
   } catch (error) {
-    console.error(error);
-    message.channel.send(
-      'There was an error trying to fetch the Grand Exchange value.'
-    );
+    throw new WdbError(name, 500);
   }
 }
