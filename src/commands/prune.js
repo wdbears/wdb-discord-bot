@@ -1,6 +1,6 @@
 export const name = 'prune';
 export const description = 'Delete the specified number of messages.';
-export const usage = '[number of messages to be deleted]';
+export const usage = '[Number]';
 export const aliases = ['clear'];
 
 export async function execute(message, args) {

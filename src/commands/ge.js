@@ -57,9 +57,8 @@ export async function execute(message, args) {
     if (keyword) {
       const items = await fetchFromRunescape(keyword);
 
-      if (!Array.isArray(items) || !items.length) {
+      if (!Array.isArray(items) || !items.length)
         message.channel.send('No items were found for '.concat(keyword));
-      }
 
       if (items.length) {
         const discordEmbed = new Discord.MessageEmbed()
