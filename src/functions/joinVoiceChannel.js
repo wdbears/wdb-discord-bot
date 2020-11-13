@@ -3,10 +3,17 @@
  * @param {string} message - The user inputted message
  * @returns {Object} - The connection object
  */
-export default async function joinVoiceChannel(message) {
+
+import { WdbError } from '../util';
+
+export default async function joinVoiceChannel(message, command) {
   try {
     return await message.member.voice.channel.join();
   } catch (err) {
-    throw new Error('you must be in a voice channel to play media!');
+    throw new WdbError(
+      command,
+      400,
+      'you must be in a voice channel to play media!'
+    );
   }
 }
