@@ -9,7 +9,7 @@ export const adminOnly = true;
 
 export async function execute(message) {
   if (message.channel.type === 'DM') {
-    // consider seperate code for DM channels
+    // consider separate code for DM channels
     throw new WdbError(name, 400, 'This command can only be used in a server.');
   }
 
