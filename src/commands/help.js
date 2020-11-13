@@ -1,4 +1,4 @@
-import prefix from '../config';
+import { prefix } from '../config';
 
 export const name = 'help';
 export const description =
