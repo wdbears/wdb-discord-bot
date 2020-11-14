@@ -9,6 +9,6 @@ export async function execute(message) {
     const connection = await message.client.voice.connections.first();
     if (connection) connection.dispatcher.pause();
   } catch (error) {
-    throw new WdbError(name, 500, error.message);
+    throw new WdbError(name, 500);
   }
 }

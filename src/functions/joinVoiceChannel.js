@@ -6,9 +6,9 @@
 
 import { WdbError } from '../util';
 
-export default async function joinVoiceChannel(message, command) {
+export default function joinVoiceChannel(message, command) {
   try {
-    return await message.member.voice.channel.join();
+    return message.member.voice.channel.join();
   } catch (err) {
     throw new WdbError(
       command,

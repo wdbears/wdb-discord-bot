@@ -21,6 +21,6 @@ export async function execute(message, args) {
     );
     botMessage.delete({ timeout: 5000 });
   } catch (error) {
-    throw new WdbError(name, 500, error.message);
+    throw new WdbError(name, 500);
   }
 }

@@ -14,7 +14,7 @@ class WdbError extends Error {
 
   get fatalErrorMsg() {
     const msg = `something went wrong using the "${this.command}" command. Contact Monke or Meowdy and give them this info: 
-    Error code: ${this.code} 
+    Error code: ${this.code}, Error message: ${this.message}
     Call stack: ${this.stack}`;
 
     return msg;
