@@ -1,5 +1,4 @@
 import ytdl from 'ytdl-core';
-import { joinVoiceChannel } from '../functions';
 import { WdbError } from '../util';
 
 export const name = 'play';
@@ -24,13 +23,23 @@ export async function execute(message, args) {
       throw new WdbError(name, 400, 'you must enter a valid url.');
 
     if (url && dispatcher === undefined) {
-      connection = await joinVoiceChannel(message, name);
-      dispatcher = connection.play(ytdl(url), {
-        filter: 'audioonly'
-      });
-      dispatcher.on('finish', () => {
-        connection.disconnect();
-      });
+      try {
+        connection = await message.member.voice.channel.join();
+      } catch (error) {
+        throw new WdbError(
+          name,
+          400,
+          'you must be in a voice channel to play media!'
+        );
+      }
+      if (connection !== undefined) {
+        dispatcher = connection.play(ytdl(url), {
+          filter: 'audioonly'
+        });
+        dispatcher.on('finish', () => {
+          connection.disconnect();
+        });
+      }
     }
   } catch (error) {
     if (error instanceof WdbError) throw error;
