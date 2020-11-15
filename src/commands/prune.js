@@ -16,9 +16,7 @@ export async function execute(message, args) {
 
   try {
     message.channel.bulkDelete(amount, true);
-    const botMessage = await message.channel.send(
-      `Successfully deleted ${amount - 1} messages!`
-    );
+    const botMessage = await message.channel.send(`Successfully deleted ${amount - 1} messages!`);
     botMessage.delete({ timeout: 5000 });
   } catch (error) {
     throw new WdbError(name, 500);

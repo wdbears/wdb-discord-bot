@@ -10,8 +10,7 @@ export const guildOnly = true;
 export async function execute(message, args) {
   try {
     let connection = message.client.voice.connections.first();
-    let dispatcher =
-      connection !== undefined ? connection.dispatcher : undefined;
+    let dispatcher = connection !== undefined ? connection.dispatcher : undefined;
 
     if (dispatcher && dispatcher.paused) {
       dispatcher.resume();
@@ -19,18 +18,13 @@ export async function execute(message, args) {
     }
 
     const url = args[0];
-    if (!ytdl.validateURL(url))
-      throw new WdbError(name, 400, 'you must enter a valid url.');
+    if (!ytdl.validateURL(url)) throw new WdbError(name, 400, 'you must enter a valid url.');
 
     if (url && dispatcher === undefined) {
       try {
         connection = await message.member.voice.channel.join();
       } catch (error) {
-        throw new WdbError(
-          name,
-          400,
-          'you must be in a voice channel to play media!'
-        );
+        throw new WdbError(name, 400, 'you must be in a voice channel to play media!');
       }
       if (connection !== undefined) {
         dispatcher = connection.play(ytdl(url), {

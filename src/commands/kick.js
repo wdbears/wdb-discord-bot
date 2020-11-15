@@ -14,19 +14,14 @@ export async function execute(message) {
   }
 
   if (!message.mentions.members.size) {
-    throw new WdbError(
-      name,
-      400,
-      'you need to tag a user in order to kick them!'
-    );
+    throw new WdbError(name, 400, 'you need to tag a user in order to kick them!');
   }
 
   const bCanKick = message.member.roles.cache.some(
     (r) => r.id === '484567203169959967' // Admin role ID
   );
 
-  if (!bCanKick)
-    throw new WdbError(name, 403, 'you do not have permission to kick.');
+  if (!bCanKick) throw new WdbError(name, 403, 'you do not have permission to kick.');
 
   const taggedMember = message.mentions.members.first();
   try {
