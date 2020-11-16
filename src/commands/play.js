@@ -1,42 +1,39 @@
-import ytdl from 'ytdl-core';
-import { WdbError } from '../util';
+import ytdl from 'ytdl-core-discord';
+// import { WdbError } from '../util';
 
 export const name = 'play';
 export const description = 'Play the audio from the given URL.';
 export const usage = '<URL>';
 export const aliases = ['p'];
 export const guildOnly = true;
+export const voiceOnly = true;
+
+async function play(connection, url) {
+  return connection.play(await ytdl(url), {
+    type: 'opus',
+    filter: 'audioonly'
+  });
+}
 
 export async function execute(message, args) {
   try {
-    let connection = message.client.voice.connections.first();
-    let dispatcher = connection !== undefined ? connection.dispatcher : undefined;
+    const connection = await message.member.voice.channel.join();
 
-    if (dispatcher && dispatcher.paused) {
-      dispatcher.resume();
-      return;
-    }
+    console.log('i got up to here!');
+    let { dispatcher } = connection;
+    console.log('dispatcher is gucci');
+
+    if (dispatcher && dispatcher.paused) return dispatcher.resume();
 
     const url = args[0];
-    if (!ytdl.validateURL(url)) throw new WdbError(name, 400, 'you must enter a valid url.');
+    if (!ytdl.validateURL(url)) return message.reply('you must enter a valid URL!');
 
-    if (url && dispatcher === undefined) {
-      try {
-        connection = await message.member.voice.channel.join();
-      } catch (error) {
-        throw new WdbError(name, 400, 'you must be in a voice channel to play media!');
-      }
-      if (connection !== undefined) {
-        dispatcher = connection.play(ytdl(url), {
-          filter: 'audioonly'
-        });
-        dispatcher.on('finish', () => {
-          connection.disconnect();
-        });
-      }
-    }
+    console.log('made it to here!');
+    dispatcher = play(connection, url);
+    console.log(dispatcher);
   } catch (error) {
-    if (error instanceof WdbError) throw error;
-    else throw new WdbError(name, 500);
+    console.log(error);
+    // if (error instanceof WdbError) throw error;
+    // else throw new WdbError(name, 500);
   }
 }
