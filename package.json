@@ -13,7 +13,7 @@
     "lint": "yarn prettier --write .",
     "build": "babel src -d dist --copy-files",
     "serve": "node dist/server.js",
-    "start-prod": "yarn build && yarn serve"
+    "start-prod": "export NODE_ENV=production && yarn build && yarn serve"
   },
   "dependencies": {
     "@discordjs/opus": "^0.3.3",
