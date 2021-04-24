@@ -9,7 +9,7 @@ WORKDIR /usr/src/app
 COPY package.json yarn.lock ./
 
 RUN apk add --update \
-    && apk add --no-cache nodejs-current nodejs-npm \
+    && apk add --no-cache nodejs-current nodejs-npm python3 \
     && apk add --no-cache --virtual .build git curl build-base g++ ffmpeg \
     && npm install -g yarn \
     && yarn install \
