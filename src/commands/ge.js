@@ -31,7 +31,7 @@ const fetchFromRunescape = async (itemQuery) => {
       const results = [];
 
       const items = $('tbody').find('tr');
-      $(items).each(function loopResults(i, item) {
+      $(items).each((i, item) => {
         const itemName = $(item).find('a').attr('title');
         const itemValue = $(item).find('td:nth-child(3)').text();
         const itemLink = $(item).find('td:nth-child(3)').find('a').attr('href');

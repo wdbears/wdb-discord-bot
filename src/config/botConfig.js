@@ -4,6 +4,8 @@ import { WdbError } from '../util';
 
 export const prefix = '?';
 
+const DISCORD_CLIENT_ID = process.env.NODE_ENV === 'production' ? process.env.DISCORD_CLIENT_ID : process.env.DISCORD_CLIENT_ID_TEST;
+
 export default (commandKeywords) => {
   const client = new Discord.Client(); // Create Discord bot client
   client.commands = new Discord.Collection();
@@ -58,5 +60,5 @@ export default (commandKeywords) => {
     }
   });
 
-  client.login(process.env.DISCORD_CLIENT_ID);
+  client.login(DISCORD_CLIENT_ID);
 };
