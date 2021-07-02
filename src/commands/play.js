@@ -17,14 +17,14 @@ async function play(connection, url) {
 
 export async function execute(message, args) {
   try {
+    const url = args[0];
+    if (!ytdl.validateURL(url)) return message.reply('you must enter a valid URL!');
+
     const connection = await message.member.voice.channel.join();
 
     let { dispatcher } = connection;
 
     if (dispatcher && dispatcher.paused) return dispatcher.resume();
-
-    const url = args[0];
-    if (!ytdl.validateURL(url)) return message.reply('you must enter a valid URL!');
 
     dispatcher = play(connection, url);
   } catch (error) {
