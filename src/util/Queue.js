@@ -4,7 +4,6 @@ class Queue {
   }
 
   enqueue(element) {
-    // adding element to the queue
     this.items.push(element);
   }
 
@@ -22,7 +21,6 @@ class Queue {
     return this.items.length === 0;
   }
 
-  // printQueue function
   printQueue() {
     let str = '';
     for (let i = 0; i < this.items.length; i += 1) str += `${this.items[i]}  `;
