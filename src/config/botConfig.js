@@ -36,8 +36,8 @@ export default (firebaseKeywords) => {
 
     const args = message.content.slice(prefix.length).trim().split(/ +/);
     const commandName = args.shift().toLowerCase();
-    const voiceChannel = message.member.voice.channel;
-    const permissions = voiceChannel.permissionsFor(message.client.user);
+    // const voiceChannel = message.member.voice.channel;
+    // const permissions = voiceChannel.permissionsFor(message.client.user);
 
     // Check if the command exists
     if (firebaseKeywords.has(commandName)) return message.channel.send(firebaseKeywords.get(commandName));
@@ -50,9 +50,6 @@ export default (firebaseKeywords) => {
     if (command.voiceOnly) {
       if (!message.member.voice.channel) {
         return message.reply('you need to be in a voice channel to use that command!');
-      }
-      if (!permissions.has('CONNECT') || !permissions.has('SPEAK')) {
-        return message.channel.send('I need permission to join and speak in your voice channel!');
       }
     }
 
