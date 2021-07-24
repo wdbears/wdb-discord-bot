@@ -36,15 +36,26 @@ export default (firebaseKeywords) => {
 
     const args = message.content.slice(prefix.length).trim().split(/ +/);
     const commandName = args.shift().toLowerCase();
+    const voiceChannel = message.member.voice.channel;
+    const permissions = voiceChannel.permissionsFor(message.client.user);
 
     // Check if the command exists
-    if (firebaseKeywords.has(commandName)) return message.channel.send(firebaseKeywords.get(commandName)); // in Firebase
-    const command = client.commands.get(commandName) || client.commands.find((cmd) => cmd.aliases && cmd.aliases.includes(commandName)); // in commands directory
+    if (firebaseKeywords.has(commandName)) return message.channel.send(firebaseKeywords.get(commandName));
+    const command = client.commands.get(commandName) || client.commands.find((cmd) => cmd.aliases && cmd.aliases.includes(commandName));
     if (!command) return message.reply("this command doesn't exist (yet)! \nFor a list of my commands, use `?help`.");
 
-    // Conditional checks for the command
-    if (command.guildOnly && message.channel.type === 'dm') return message.reply("I can't execute that command inside DMs!");
-    if (command.voiceOnly && !message.member.voice.channel) return message.reply('you need to be in a voice channel to use that command!');
+    if (command.guildOnly && message.channel.type === 'dm') {
+      return message.reply("I can't execute that command inside DMs!");
+    }
+    if (command.voiceOnly) {
+      if (!message.member.voice.channel) {
+        return message.reply('you need to be in a voice channel to use that command!');
+      }
+      if (!permissions.has('CONNECT') || !permissions.has('SPEAK')) {
+        return message.channel.send('I need permission to join and speak in your voice channel!');
+      }
+    }
+
     if (command.argsRequired && !args.length) {
       let reply = `You didn't provide any arguments, ${message.author}`;
       if (command.usage) reply += `\nThe proper usage would be: \`${prefix}${command.name} ${command.usage}\``;

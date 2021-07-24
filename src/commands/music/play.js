@@ -1,6 +1,5 @@
 import ytdl from 'ytdl-core';
-import { execute as resume } from './resume';
-import { isNullOrEmpty } from '../../util/StringUtil';
+import { isNullOrEmpty, WdbError } from '../../util';
 
 export const name = 'play';
 export const description = 'Play the audio from the given URL.';
@@ -11,12 +10,11 @@ export const voiceOnly = true;
 
 function play(message, song) {
   const { queue } = message.client;
-  const { guild } = message;
   const serverQueue = queue.get(message.guild.id);
 
   if (!song) {
     serverQueue.voiceChannel.leave();
-    queue.delete(guild.id);
+    queue.delete(message.guild.id);
     return;
   }
 
@@ -35,16 +33,15 @@ export async function execute(message, args) {
   try {
     const url = args[0];
     const { queue } = message.client;
-    const serverQueue = message.client.queue.get(message.guild.id);
+    const serverQueue = queue.get(message.guild.id);
     const voiceChannel = message.member.voice.channel;
-    const permissions = voiceChannel.permissionsFor(message.client.user);
 
-    if (!permissions.has('CONNECT') || !permissions.has('SPEAK')) {
-      return message.channel.send('I need permission to join and speak in your voice channel!');
+    if (isNullOrEmpty(url) && serverQueue) {
+      if (serverQueue.connection.dispatcher.paused) {
+        return serverQueue.connection.dispatcher.resume();
+      }
+      return message.channel.send('The player is not paused!');
     }
-
-    if (serverQueue && serverQueue.connection.dispatcher.paused) return resume(message);
-    if (isNullOrEmpty(url) && serverQueue && !serverQueue.connection.dispatcher.paused) return message.channel.send('The player is not paused!');
 
     const songInfo = await ytdl.getInfo(url);
     const song = {
@@ -79,6 +76,6 @@ export async function execute(message, args) {
       return message.channel.send(`${song.title} has been added to the queue!`);
     }
   } catch (error) {
-    message.channel.send(error.message);
+    throw new WdbError(name, 400, 'Something went wrong try to play the song!', error);
   }
 }
