@@ -36,12 +36,17 @@ export async function execute(message, args) {
     const serverQueue = queue.get(message.guild.id);
     const voiceChannel = message.member.voice.channel;
 
-    if (isNullOrEmpty(url) && serverQueue) {
-      if (serverQueue.connection.dispatcher.paused) {
-        return serverQueue.connection.dispatcher.resume();
+    if (isNullOrEmpty(url)) {
+      if (serverQueue) {
+        if (serverQueue.connection.dispatcher.paused) {
+          return serverQueue.connection.dispatcher.resume();
+        }
+        return message.channel.send('The player is not paused!');
       }
-      return message.channel.send('The player is not paused!');
+      return message.channel.send('Please enter a song URL!');
     }
+
+    if (!ytdl.validateURL(url)) return message.reply('you must enter a valid URL!');
 
     const songInfo = await ytdl.getInfo(url);
     const song = {
@@ -76,6 +81,6 @@ export async function execute(message, args) {
       return message.channel.send(`${song.title} has been added to the queue!`);
     }
   } catch (error) {
-    throw new WdbError(name, 400, 'Something went wrong try to play the song!', error);
+    throw new WdbError(name, 400, 'something went wrong trying to play the song!', error);
   }
 }
