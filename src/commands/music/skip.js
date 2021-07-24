@@ -2,6 +2,7 @@ import { WdbError } from '../../util';
 
 export const name = 'skip';
 export const description = 'Skip the currently playing audio';
+export const aliases = ['s'];
 export const guildOnly = true;
 export const voiceOnly = true;
 
