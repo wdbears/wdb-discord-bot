@@ -1,3 +1,4 @@
+/* eslint-disable no-param-reassign */
 /* eslint-disable global-require */
 /* eslint-disable import/no-dynamic-require */
 import Discord from 'discord.js';
@@ -8,23 +9,41 @@ export const prefix = '?';
 
 const DISCORD_CLIENT_ID = process.env.NODE_ENV === 'production' ? process.env.DISCORD_CLIENT_ID : process.env.DISCORD_CLIENT_ID_TEST;
 
+const getAllFiles = (dirPath, arrayOfFiles) => {
+  const files = fs.readdirSync(dirPath);
+  files.forEach((file) => {
+    if (fs.statSync(`${dirPath}/${file}`).isDirectory()) {
+      arrayOfFiles = getAllFiles(`${dirPath}/${file}`, arrayOfFiles);
+    } else {
+      const simplePath = dirPath.split('commands/');
+      if (simplePath[1]) {
+        // include subdirectory in path
+        arrayOfFiles.push(`${simplePath[1]}/${file}`);
+      } else {
+        arrayOfFiles.push(`${file}`);
+      }
+    }
+  });
+  return arrayOfFiles;
+};
+
+const populateDirectoryCommands = (client) => {
+  const allFiles = getAllFiles('./src/commands', []);
+  // Populate commands from commands directory
+  const commandFiles = allFiles.filter((file) => file.endsWith('.js'));
+  commandFiles.forEach((file) => {
+    const command = require(`../commands/${file}`);
+    client.commands.set(command.name, command);
+  });
+};
+
 export default (firebaseKeywords) => {
   const client = new Discord.Client(); // Create Discord bot client
   client.commands = new Discord.Collection();
   client.queue = new Map();
   client.config = { disableEveryone: true, disabledEvents: ['TYPING_START'] };
 
-  // Populate commands from commands directory
-  let commandFiles = fs.readdirSync('./src/commands').filter((file) => file.endsWith('.js'));
-  commandFiles.forEach((file) => {
-    const command = require(`../commands/${file}`);
-    client.commands.set(command.name, command);
-  });
-  commandFiles = fs.readdirSync('./src/commands/music').filter((file) => file.endsWith('.js'));
-  commandFiles.forEach((file) => {
-    const command = require(`../commands/music/${file}`);
-    client.commands.set(command.name, command);
-  });
+  populateDirectoryCommands(client);
 
   client.once('ready', () => {
     console.log('Nom Nom is ready to munch...');
