@@ -1,7 +1,7 @@
 import { SlashCommandBuilder } from '@discordjs/builders';
 import { CommandInteraction } from 'discord.js';
 
-export interface Command {
+export interface ICommand {
   name: string;
   description: string;
   usage: string;
@@ -12,13 +12,13 @@ export interface Command {
   execute(interaction: CommandInteraction): void;
 }
 
-class BuiltCommand extends SlashCommandBuilder {
+export class Command extends SlashCommandBuilder {
   usage: string;
   aliases: string[];
   cooldown: number;
   argsRequired: boolean;
 
-  constructor(cmd: Command) {
+  constructor(cmd: ICommand) {
     super();
     this.setName(cmd.name);
     this.setDescription(cmd.description);
