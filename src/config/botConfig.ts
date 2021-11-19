@@ -1,17 +1,15 @@
 import * as fs from 'fs';
-import { Client, Collection, Intents } from 'discord.js';
 import CustomClient from '../util/CustomClient';
+import { removeExtension } from '../util/StringUtil';
 
 export const botConfig = (token: string) => {
   // Create a new client instance
   const client = new CustomClient();
 
-  const commandFiles = fs.readdirSync('./commands').filter((file) => file.endsWith('.js'));
+  const commandFiles = fs.readdirSync('./src/commands').filter((file) => file.endsWith('.ts'));
 
   for (const file of commandFiles) {
-    const command = require(`./commands/${file}`);
-    // Set a new item in the Collection
-    // With the key as the command name and the value as the exported module
+    const command = require(`../commands/${removeExtension(file, '.ts')}`);
     client.commands.set(command.data.name, command);
   }
 

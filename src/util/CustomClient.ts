@@ -1,7 +1,8 @@
 import { Client, Intents, Collection } from 'discord.js';
+import { Command } from './Command';
 
 export default class CustomClient extends Client {
-  commands: Collection<string, string>;
+  commands: Collection<string, Command>;
   queue: Map<string, string>;
   config: Object;
 
