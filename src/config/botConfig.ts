@@ -1,30 +1,37 @@
-const { REST } = require('@discordjs/rest');
-const { Routes } = require('discord-api-types/v9');
-const { token } = require('./config.json');
-const fs = require('fs');
+import * as fs from 'fs';
+import { Client, Collection, Intents } from 'discord.js';
+import CustomClient from '../util/CustomClient';
 
-const commands = [];
-const commandFiles = fs.readdirSync('./commands').filter((file: string) => file.endsWith('.js'));
+export const botConfig = (token: string) => {
+  // Create a new client instance
+  const client = new CustomClient();
 
-// Place your client and guild ids here
-const clientId = '183889853245685760';
-const guildId = '212053973274853377';
+  const commandFiles = fs.readdirSync('./commands').filter((file) => file.endsWith('.ts'));
 
-for (const file of commandFiles) {
-  const command = require(`./commands/${file}`);
-  commands.push(command.data.toJSON());
-}
-
-const rest = new REST({ version: '9' }).setToken(token);
-
-(async () => {
-  try {
-    console.log('Started refreshing application (/) commands.');
-
-    await rest.put(Routes.applicationGuildCommands(clientId, guildId), { body: commands });
-
-    console.log('Successfully reloaded application (/) commands.');
-  } catch (error) {
-    console.error(error);
+  for (const file of commandFiles) {
+    const command = require(`./commands/${file}`);
+    // Set a new item in the Collection
+    // With the key as the command name and the value as the exported module
+    client.commands.set(command.data.name, command);
   }
-})();
+
+  client.once('ready', () => {
+    console.log('Ready!');
+  });
+
+  client.on('interactionCreate', async (interaction) => {
+    if (!interaction.isCommand()) return;
+
+    const { commandName } = interaction;
+
+    if (commandName === 'ping') {
+      await interaction.reply('Pong!');
+    } else if (commandName === 'server') {
+      await interaction.reply(`Server name: ${interaction.guild!.name}\nTotal members: ${interaction.guild!.memberCount}`);
+    } else if (commandName === 'user') {
+      await interaction.reply(`Your tag: ${interaction.user.tag}\nYour id: ${interaction.user.id}`);
+    }
+  });
+
+  client.login(token);
+};
