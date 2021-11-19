@@ -4,6 +4,9 @@ import { REST } from '@discordjs/rest';
 import { Routes } from 'discord-api-types/v9';
 import { removeExtension } from './util/StringUtil';
 
+// Run this file with `yarn deploy-commands` to update slash commands
+
+// Environment Variables
 const isProd = process.env['NODE_ENV'] === 'production';
 const BOT_TOKEN = isProd ? process.env['BOT_TOKEN']! : process.env['BOT_TOKEN_TEST']!;
 const CLIENT_ID = isProd ? process.env['CLIENT_ID']! : process.env['CLIENT_ID_TEST']!;
