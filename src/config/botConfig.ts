@@ -27,5 +27,10 @@ export const botConfig = (token: string) => {
     }
   }
 
+  // Listen for API errors
+  process.on('unhandledRejection', (error) => {
+    console.error('Unhandled promise rejection:', error);
+  });
+
   client.login(token);
 };

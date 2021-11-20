@@ -10,7 +10,7 @@ let prune: ICommand = {
   argsRequired: true,
   cooldown: 0,
   execute: async (interaction: CommandInteraction<CacheType>): Promise<void> => {
-    await interaction.reply('d');
+    console.log(interaction.options);
     //     // const amount = parseInt(args[0], 10) + 1;
     //     // if (Number.isNaN(amount)) throw new Error(`${amount} is an invalid number`);
     //     // if (amount <= 1 || amount > 100) throw new Error(`please input a number between 1 and 99`);
