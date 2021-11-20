@@ -13,19 +13,24 @@ const BOT_TOKEN = isProd ? process.env['BOT_TOKEN']! : process.env['BOT_TOKEN_TE
 const CLIENT_ID = isProd ? process.env['CLIENT_ID']! : process.env['CLIENT_ID_TEST']!;
 const GUILD_ID = isProd ? process.env['GUILD_ID']! : process.env['GUILD_ID_TEST']!;
 
-const commands: RESTPostAPIApplicationCommandsJSONBody[] = [];
+const globalCommands: RESTPostAPIApplicationCommandsJSONBody[] = [];
+const guildSpecificCommands: RESTPostAPIApplicationCommandsJSONBody[] = [];
 const registeredCommands: string[] = [];
+
 const commandFiles = fs.readdirSync('src/commands').filter((file) => file.endsWith('.ts'));
 
 for (const file of commandFiles) {
   const command: Command = require(`./commands/${removeExtension(file, '.ts')}`).default;
-  commands.push(command.data.toJSON());
+
+  command.isGlobal ? guildSpecificCommands.push(command.data.toJSON()) : globalCommands.push(command.data.toJSON());
   registeredCommands.push(command.name);
 }
 
 const rest = new REST({ version: '9' }).setToken(BOT_TOKEN);
 
-rest
-  .put(Routes.applicationGuildCommands(CLIENT_ID, GUILD_ID), { body: commands })
-  .then(() => console.log(`Successfully registered the following commands: ${registeredCommands}`))
-  .catch(console.error);
+try {
+  rest.put(Routes.applicationGuildCommands(CLIENT_ID, GUILD_ID), { body: globalCommands });
+  rest.put(Routes.applicationGuildCommands(CLIENT_ID, GUILD_ID), { body: guildSpecificCommands });
+} catch (error) {
+  console.error;
+}
