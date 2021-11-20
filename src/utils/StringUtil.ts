@@ -1,5 +1,4 @@
 import * as fs from 'fs'
-import { Command } from '../models/Command'
 
 export const removeExtension = (file: string, extension: string): string => {
   // Extension example - .ts
@@ -7,8 +6,8 @@ export const removeExtension = (file: string, extension: string): string => {
   return file.substring(0, file.length - trimSize)
 }
 
-export const getDefaultExport = (file: any): Command => {
-  return require(`./commands/${removeExtension(file, '.ts')}`).default
+export const getDefaultExport = (path: string, file: any): any => {
+  return require(`${path}/${removeExtension(file, '.ts')}`).default
 }
 
 export const getFilesFromDirectory = (directoryPath: string, extension: string) => {

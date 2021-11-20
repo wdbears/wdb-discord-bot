@@ -19,7 +19,7 @@ const registeredCommands: string[] = []
 const commandFiles = getFilesFromDirectory('src/commands', '.ts')
 
 for (const file of commandFiles) {
-  const command: Command = getDefaultExport(file)
+  const command: Command = getDefaultExport('./commands', file)
   const data = command.data.toJSON()
   command.isGlobal ? guildCommands.push(data) : globalCommands.push(data)
   registeredCommands.push(command.name)
