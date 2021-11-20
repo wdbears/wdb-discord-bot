@@ -1,7 +1,7 @@
 import { CommandInteraction, CacheType } from 'discord.js';
 import { ICommand, Command } from '../models/Command';
 
-let prunes: ICommand = {
+let prune: ICommand = {
   name: 'prune',
   description: 'Delete the specified number of messages.',
   usage: '[Number]',
@@ -24,4 +24,4 @@ let prunes: ICommand = {
   }
 };
 
-export default new Command(prunes);
+export default new Command(prune);
