@@ -1,6 +1,8 @@
 import { SlashCommandBuilder } from '@discordjs/builders'
-import { CommandInteraction, CacheType } from 'discord.js'
+import { CommandInteraction, CacheType, TextChannel } from 'discord.js'
 import { ICommand, Command } from '../models/Command'
+
+const wait = require('util').promisify(setTimeout)
 
 let prune: ICommand = {
   name: 'prune',
@@ -17,15 +19,15 @@ let prune: ICommand = {
     const amount = interaction.options.getInteger('amount')!
 
     if (Number.isNaN(amount)) throw new Error(`${amount} is an invalid number`)
-    if (amount <= 1 || amount > 100) throw new Error(`please input a number between 1 and 99`)
+    if (amount < 1 || amount > 100) throw new Error(`please input a number between 1 and 99`)
 
     try {
-      interaction.channel!.bulkDelete(4)
-      const message = await interaction.channel!.send(
-        `Successfully deleted ${amount - 1} messages!`
-      )
-
-      setTimeout(() => message.delete(), 5000)
+      const channel = interaction.channel as TextChannel
+      await channel
+        .bulkDelete(amount, true)
+        .then((messages) => interaction.reply(`Successfully deleted ${messages.size} messages!`))
+      await wait(4000)
+      await interaction.deleteReply()
     } catch (error) {
       console.log(error)
     }

@@ -1,7 +1,7 @@
 import 'dotenv/config'
 import express from 'express'
 
-import { botConfig } from './config/botConfig'
+import { initBot } from './config/botConfig'
 // import { fbDatabase, fbStorage } from './firebase';
 
 const isProd = process.env['NODE_ENV'] === 'production'
@@ -23,4 +23,4 @@ app.listen(port, () => {
 // const commandKeywords = fbDatabase(fbInstance); // Cache bot commands from Firebase
 // fbStorage(fbInstance); // Connect to Firebase storage
 
-botConfig(BOT_TOKEN) // Initialize & start bot
+initBot(BOT_TOKEN)

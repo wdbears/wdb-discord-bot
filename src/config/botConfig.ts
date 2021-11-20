@@ -5,7 +5,7 @@ import { getDefaultExport, getFilesFromDirectory } from '../utils/StringUtil'
 
 export const client = new CustomClient()
 
-export const botConfig = (token: string) => {
+export const initBot = (token: string) => {
   // Load commands
   const commandFiles = getFilesFromDirectory('./src/commands', '.ts')
 
