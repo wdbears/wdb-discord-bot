@@ -1,5 +1,5 @@
-import { CommandInteraction, CacheType } from 'discord.js';
-import { ICommand, Command } from '../models/Command';
+import { CommandInteraction, CacheType } from 'discord.js'
+import { ICommand, Command } from '../models/Command'
 
 let prune: ICommand = {
   name: 'prune',
@@ -10,7 +10,7 @@ let prune: ICommand = {
   argsRequired: true,
   cooldown: 0,
   execute: async (interaction: CommandInteraction<CacheType>): Promise<void> => {
-    console.log(interaction.options);
+    console.log(interaction.options)
     //     // const amount = parseInt(args[0], 10) + 1;
     //     // if (Number.isNaN(amount)) throw new Error(`${amount} is an invalid number`);
     //     // if (amount <= 1 || amount > 100) throw new Error(`please input a number between 1 and 99`);
@@ -22,6 +22,6 @@ let prune: ICommand = {
     //     //   throw new WdbError(name, 500);
     //     // }
   }
-};
+}
 
-export default new Command(prune);
+export default new Command(prune)

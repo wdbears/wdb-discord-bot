@@ -1,5 +1,5 @@
 export default interface IEvent {
-  name: string;
-  once: boolean;
-  execute(...args: any): void | Promise<void>;
+  name: string
+  once: boolean
+  execute(...args: any): void | Promise<void>
 }
