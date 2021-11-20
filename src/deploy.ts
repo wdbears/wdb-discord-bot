@@ -1,8 +1,9 @@
 import 'dotenv/config';
 import * as fs from 'fs';
 import { REST } from '@discordjs/rest';
-import { Routes } from 'discord-api-types/v9';
-import { removeExtension } from './util/StringUtil';
+import { RESTPostAPIApplicationCommandsJSONBody, Routes } from 'discord-api-types/v9';
+import { removeExtension } from './utils/StringUtil';
+import { Command } from './models/Command';
 
 // Run this file with `yarn deploy-commands` to update slash commands
 
@@ -12,17 +13,19 @@ const BOT_TOKEN = isProd ? process.env['BOT_TOKEN']! : process.env['BOT_TOKEN_TE
 const CLIENT_ID = isProd ? process.env['CLIENT_ID']! : process.env['CLIENT_ID_TEST']!;
 const GUILD_ID = isProd ? process.env['GUILD_ID']! : process.env['GUILD_ID_TEST']!;
 
-const commands: any = [];
+const commands: RESTPostAPIApplicationCommandsJSONBody[] = [];
+const registeredCommands: string[] = [];
 const commandFiles = fs.readdirSync('src/commands').filter((file) => file.endsWith('.ts'));
 
 for (const file of commandFiles) {
-  const command = require(`./commands/${removeExtension(file, '.ts')}`);
+  const command: Command = require(`./commands/${removeExtension(file, '.ts')}`).default;
   commands.push(command.data.toJSON());
+  registeredCommands.push(command.name);
 }
 
 const rest = new REST({ version: '9' }).setToken(BOT_TOKEN);
 
 rest
   .put(Routes.applicationGuildCommands(CLIENT_ID, GUILD_ID), { body: commands })
-  .then(() => console.log('Successfully registered application commands.'))
+  .then(() => console.log(`Successfully registered the following commands: ${registeredCommands}`))
   .catch(console.error);

@@ -1,36 +1,31 @@
 import * as fs from 'fs';
-import CustomClient from '../util/CustomClient';
-import { removeExtension } from '../util/StringUtil';
+import { Command } from '../models/Command';
+import CustomClient from '../models/CustomClient';
+import IEvent from '../models/IEvent';
+import { removeExtension } from '../utils/StringUtil';
+
+export const client = new CustomClient();
 
 export const botConfig = (token: string) => {
-  // Create a new client instance
-  const client = new CustomClient();
-
+  // Load commands
   const commandFiles = fs.readdirSync('./src/commands').filter((file) => file.endsWith('.ts'));
 
   for (const file of commandFiles) {
-    const command = require(`../commands/${removeExtension(file, '.ts')}`);
-    client.commands.set(command.data.name, command);
+    const command: Command = require(`../commands/${removeExtension(file, '.ts')}`).default;
+    client.commands.set(command.name, command);
   }
 
-  client.once('ready', () => {
-    console.log('Ready!');
-  });
+  // Load events
+  const eventFiles = fs.readdirSync('./src/events').filter((file) => file.endsWith('.ts'));
 
-  client.on('interactionCreate', async (interaction) => {
-    if (!interaction.isCommand()) return;
-
-    const command = client.commands.get(interaction.commandName);
-
-    if (!command) return;
-
-    try {
-      await command.execute(interaction);
-    } catch (error) {
-      console.error(error);
-      await interaction.reply({ content: 'There was an error while executing this command!', ephemeral: true });
+  for (const file of eventFiles) {
+    const event: IEvent = require(`../events/${removeExtension(file, '.ts')}`).default;
+    if (event.once) {
+      client.once(event.name, (...args) => event.execute(...args));
+    } else {
+      client.on(event.name, (...args) => event.execute(...args));
     }
-  });
+  }
 
   client.login(token);
 };
