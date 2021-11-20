@@ -1,3 +1,4 @@
+import { SlashCommandBuilder } from '@discordjs/builders'
 import { CommandInteraction, CacheType } from 'discord.js'
 import { ICommand, Command } from '../models/Command'
 
@@ -9,18 +10,25 @@ let prune: ICommand = {
   isGlobal: true,
   argsRequired: true,
   cooldown: 0,
+  data: new SlashCommandBuilder().addIntegerOption((option) =>
+    option.setName('amount').setDescription('amount of messages to be deleted').setRequired(true)
+  ),
   execute: async (interaction: CommandInteraction<CacheType>): Promise<void> => {
-    console.log(interaction.options)
-    //     // const amount = parseInt(args[0], 10) + 1;
-    //     // if (Number.isNaN(amount)) throw new Error(`${amount} is an invalid number`);
-    //     // if (amount <= 1 || amount > 100) throw new Error(`please input a number between 1 and 99`);
-    //     // try {
-    //     //   interaction.channel
-    //     //   const botMessage = await message.channel.send(`Successfully deleted ${amount - 1} messages!`);
-    //     //   botMessage.delete({ timeout: 5000 });
-    //     // } catch (error) {
-    //     //   throw new WdbError(name, 500);
-    //     // }
+    const amount = interaction.options.getInteger('amount')!
+
+    if (Number.isNaN(amount)) throw new Error(`${amount} is an invalid number`)
+    if (amount <= 1 || amount > 100) throw new Error(`please input a number between 1 and 99`)
+
+    try {
+      interaction.channel!.bulkDelete(4)
+      const message = await interaction.channel!.send(
+        `Successfully deleted ${amount - 1} messages!`
+      )
+
+      setTimeout(() => message.delete(), 5000)
+    } catch (error) {
+      console.log(error)
+    }
   }
 }
 
