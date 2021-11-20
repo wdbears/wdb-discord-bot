@@ -13,7 +13,8 @@
     "build": "tsc",
     "serve": "node dist/server.js",
     "start-prod": "export NODE_ENV=production && yarn build && yarn serve",
-    "deploy-commands": "yarn build && node dist/deploy.js"
+    "deploy-commands": "yarn build && node dist/deploy.js",
+    "clean": "rm -rf /node_modules /dist"
   },
   "dependencies": {
     "@discordjs/builders": "^0.8.2",

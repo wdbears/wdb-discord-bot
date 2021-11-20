@@ -6,6 +6,7 @@ export const removeExtension = (file: string, extension: string): string => {
   return file.substring(0, file.length - trimSize)
 }
 
+// Note - path is relative to this directory, not where it is called from
 export const getDefaultExport = (path: string, file: any): any => {
   return require(`${path}/${removeExtension(file, '.ts')}`).default
 }

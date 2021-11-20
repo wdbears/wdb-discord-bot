@@ -10,7 +10,7 @@ export interface ICommand {
   isGlobal: boolean // when false, the command is guild specific
   argsRequired: boolean
   cooldown: number
-  data?: SlashCommandBuilder
+  data?: Omit<SlashCommandBuilder, 'addSubcommand' | 'addSubcommandGroup'>
   execute(interaction: CommandInteraction): Promise<void>
 }
 
@@ -23,7 +23,7 @@ export class Command {
   isGlobal: boolean
   argsRequired: boolean
   cooldown: number
-  data: SlashCommandBuilder
+  data: Omit<SlashCommandBuilder, 'addSubcommand' | 'addSubcommandGroup'>
   execute: (interaction: CommandInteraction<CacheType>) => Promise<void>
 
   constructor(cmd: ICommand) {
@@ -35,19 +35,11 @@ export class Command {
     this.isGlobal = cmd.isGlobal
     this.argsRequired = cmd.argsRequired
     this.cooldown = cmd.cooldown
-
-    if (cmd.data) {
-      this.data = cmd.data
-        .setName(this.name)
-        .setDescription(this.description)
-        .setDefaultPermission(this.isEnabled)
-    } else {
-      this.data = new SlashCommandBuilder()
-        .setName(this.name)
-        .setDescription(this.description)
-        .setDefaultPermission(this.isEnabled)
-    }
-
+    this.data = cmd.data ? cmd.data : new SlashCommandBuilder()
+    this.data
+      .setName(this.name)
+      .setDescription(this.description)
+      .setDefaultPermission(this.isEnabled)
     this.execute = cmd.execute
   }
 }
