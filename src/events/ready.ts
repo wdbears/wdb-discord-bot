@@ -1,11 +1,11 @@
-import IEvent from '../models/IEvent'
+import IEvent from '../models/IEvent';
 
 const ready: IEvent = {
   name: 'ready',
   once: false,
   execute: (): void => {
-    console.log('Ready!')
+    console.log('Ready!');
   }
-}
+};
 
-export default ready
+export default ready;

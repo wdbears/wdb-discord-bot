@@ -1,13 +1,9 @@
-import { SlashCommandBuilder } from '@discordjs/builders';
 import { CommandInteraction, CacheType, TextChannel } from 'discord.js';
-import { ICommand, Command } from '../models/Command';
+import { ICommand, Command } from '../../models/Command';
 
-let prune: ICommand = {
-  name: 'prune',
-  description: 'Delete the specified number of messages.',
-  data: new SlashCommandBuilder().addIntegerOption((option) =>
-    option.setName('amount').setDescription('amount of messages to be deleted').setRequired(true)
-  ),
+let btc: ICommand = {
+  name: 'btc',
+  description: 'Fetch the current price of Bitcoin.',
 
   execute: async (interaction: CommandInteraction<CacheType>): Promise<void> => {
     const amount = interaction.options.getInteger('amount')!;
@@ -32,4 +28,4 @@ let prune: ICommand = {
   }
 };
 
-export default new Command(prune);
+export default new Command(btc);
