@@ -1,10 +1,9 @@
 import 'dotenv/config';
 import { REST } from '@discordjs/rest';
 import { RESTPostAPIApplicationCommandsJSONBody, Routes } from 'discord-api-types/v9';
-import { getDefaultExport, getFilesFromDirectory } from './util';
-import { Command } from './models/Command';
+import { getCommands } from './util';
 
-// Run this file with `yarn deploy-commands` to update slash commands
+// Run this file with `yarn deploy` or `yarn deploy-prod` to update slash commands
 
 // Environment Variables
 const isProd = process.env['NODE_ENV'] === 'production';
@@ -16,14 +15,21 @@ const globalCommands: RESTPostAPIApplicationCommandsJSONBody[] = [];
 const guildCommands: RESTPostAPIApplicationCommandsJSONBody[] = [];
 const registeredCommands: string[] = [];
 
-const commandFiles = getFilesFromDirectory('src/commands', '.ts');
+// const commandFiles = getFilesFromDirectory('src/commands', '.ts');
 
-for (const file of commandFiles) {
-  const command: Command = getDefaultExport('../commands', file);
+// for (const file of commandFiles) {
+//   const command: Command = getDefaultExport('./commands', file);
+//   const data = command.data.toJSON();
+//   command.isGlobal ? guildCommands.push(data) : globalCommands.push(data);
+//   registeredCommands.push(command.name);
+// }
+
+getCommands().forEach((command) => {
+  console.log(command);
   const data = command.data.toJSON();
   command.isGlobal ? guildCommands.push(data) : globalCommands.push(data);
   registeredCommands.push(command.name);
-}
+});
 
 const rest = new REST({ version: '9' }).setToken(BOT_TOKEN);
 
