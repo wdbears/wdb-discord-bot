@@ -10,7 +10,7 @@ async function fetch(...args: any) {
 }
 
 const getCrypto = async (crypto: string): Promise<any> => {
-  const api = `https://min-api.cryptocompare.com/data/pricemulti?fsyms=${crypto}&tsyms=USD`;
+  const api = `https://api.coingecko.com/api/v3/simple/price?ids=${crypto}&vs_currencies=usd  `;
   try {
     const response = await fetch(api, { method: 'GET' });
     if (response.ok) return response.json();
@@ -34,8 +34,8 @@ const formatResult = (result: Promise<any>): string[] => {
   return results;
 };
 
-const crypto: ICommand = {
-  name: 'crypto',
+const price: ICommand = {
+  name: 'price',
   description: 'Fetch the current price of a given cryptocurrency.',
   data: new SlashCommandBuilder().addStringOption((option) =>
     option
@@ -45,7 +45,7 @@ const crypto: ICommand = {
   ),
   execute: async (interaction: CommandInteraction<CacheType>): Promise<void> => {
     try {
-      const keyword = interaction.options.getString('tickers')!.replace(/_/g, ',').toUpperCase();
+      const keyword = interaction.options.getString('tickers')!.replace(/%2C/g, ',');
       if (keyword) {
         const result = formatResult(await getCrypto(keyword));
         interaction.reply(result.toString());
@@ -56,4 +56,4 @@ const crypto: ICommand = {
   }
 };
 
-export default new Command(crypto);
+export default new Command(price);
