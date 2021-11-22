@@ -1,5 +1,5 @@
 import { SlashCommandBuilder } from '@discordjs/builders';
-import { CommandInteraction, CacheType } from 'discord.js';
+import { CommandInteraction, CacheType, MessageEmbed } from 'discord.js';
 import { Command, ICommand } from '../../models/Command';
 import { fetch } from '../../util';
 
@@ -16,8 +16,8 @@ const getCrypto = async (crypto: string, useBackup?: boolean): Promise<any> => {
   }
 };
 
-const formatResult = (result: Promise<any>): string[] => {
-  const results: string[] = [];
+const formatResult = (result: Promise<any>) => {
+  const obj = { name: '', price: '' };
 
   Object.entries(result).forEach(([key, value]) => {
     const currentPrice: number = Object.values(value as number)[0];
@@ -25,10 +25,35 @@ const formatResult = (result: Promise<any>): string[] => {
       style: 'currency',
       currency: 'USD'
     });
-    results.push(`${key}: ${formatter.format(currentPrice)}`);
+    obj.name = key.toLowerCase();
+    obj.price = formatter.format(currentPrice);
   });
 
-  return results;
+  return obj;
+};
+
+const getEmbed = (coin: { name: string; price: string }, isBackup?: boolean) => {
+  const coinGecko = {
+    name: 'CoinGecko',
+    url: `https://www.coingecko.com/en/coins/${coin.name}`,
+    home: 'https://www.coingecko.com/en'
+  };
+
+  const cryptoCompare = {
+    name: 'CryptoCompare',
+    url: `https://www.cryptocompare.com/coins/${coin.name}/overview/USD`,
+    home: 'https://www.cryptocompare.com'
+  };
+
+  const api = isBackup ? cryptoCompare : coinGecko;
+
+  return new MessageEmbed()
+    .setColor('#0099ff')
+    .setTitle(coin.name.toUpperCase())
+    .setURL(api.url)
+    .setAuthor(api.name, undefined, api.home)
+    .setDescription(coin.price)
+    .setTimestamp();
 };
 
 const price: ICommand = {
@@ -42,13 +67,21 @@ const price: ICommand = {
   ),
   execute: async (interaction: CommandInteraction<CacheType>): Promise<void> => {
     try {
-      const keyword = interaction.options.getString('tickers')!.replace(/%2C/g, ',');
-      if (keyword) {
-        let result = await getCrypto(keyword);
-        if (Object.keys(result).length === 0) result = await getCrypto(keyword, true);
-        result = formatResult(result);
-        interaction.reply(result.toString());
+      const coins: string[] = interaction.options.getString('tickers')!.split(',');
+      const embeds: MessageEmbed[] = [];
+
+      for (let coin of coins) {
+        let price = await getCrypto(coin);
+        if (Object.keys(await price).length === 0) {
+          price = await getCrypto(coin, true);
+          embeds.push(getEmbed(formatResult(price), true));
+        } else {
+          embeds.push(getEmbed(formatResult(price)));
+        }
       }
+
+      if (embeds.length === 0) await interaction.reply('No result found');
+      else await interaction.reply({ embeds: embeds });
     } catch (error) {
       console.log(error);
     }
