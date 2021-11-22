@@ -3,6 +3,13 @@ import * as fs from 'fs';
 // Used for asynchronous timeouts
 export const wait = require('util').promisify(setTimeout);
 
+// alternative way of importing node-fetch since it uses ESM3 (not supported in current config)
+const _importDynamic = new Function('modulePath', 'return import(modulePath)');
+export async function fetch(...args: any) {
+  const { default: fetch } = await _importDynamic('node-fetch');
+  return fetch(...args);
+}
+
 export const removeFileExtension = (file: string, extension: string): string => {
   const trimSize = extension.length;
   return file.substring(0, file.length - trimSize);

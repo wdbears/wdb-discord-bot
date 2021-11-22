@@ -1,21 +1,18 @@
 import { SlashCommandBuilder } from '@discordjs/builders';
 import { CommandInteraction, CacheType } from 'discord.js';
 import { Command, ICommand } from '../../models/Command';
+import { fetch } from '../../util';
 
-// alternative way of importing node-fetch since it uses ESM3 (not supported in current config)
-const _importDynamic = new Function('modulePath', 'return import(modulePath)');
-async function fetch(...args: any) {
-  const { default: fetch } = await _importDynamic('node-fetch');
-  return fetch(...args);
-}
-
-const getCrypto = async (crypto: string): Promise<any> => {
-  const api = `https://api.coingecko.com/api/v3/simple/price?ids=${crypto}&vs_currencies=usd  `;
+const getCrypto = async (crypto: string, useBackup?: boolean): Promise<any> => {
+  const api = `https://api.coingecko.com/api/v3/simple/price?ids=${crypto}&vs_currencies=usd`;
+  const backup = `https://min-api.cryptocompare.com/data/pricemulti?fsyms=${crypto}&tsyms=USD`;
   try {
-    const response = await fetch(api, { method: 'GET' });
-    if (response.ok) return response.json();
-  } catch (err) {
-    console.error(err);
+    const res = useBackup
+      ? await fetch(backup, { method: 'GET' })
+      : await fetch(api, { method: 'GET' });
+    if (res.ok) return res.json();
+  } catch (error) {
+    console.error;
   }
 };
 
@@ -47,7 +44,9 @@ const price: ICommand = {
     try {
       const keyword = interaction.options.getString('tickers')!.replace(/%2C/g, ',');
       if (keyword) {
-        const result = formatResult(await getCrypto(keyword));
+        let result = await getCrypto(keyword);
+        if (Object.keys(result).length === 0) result = await getCrypto(keyword, true);
+        result = formatResult(result);
         interaction.reply(result.toString());
       }
     } catch (error) {
