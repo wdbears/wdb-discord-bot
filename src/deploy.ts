@@ -1,7 +1,8 @@
 import 'dotenv/config';
 import { REST } from '@discordjs/rest';
 import { RESTPostAPIApplicationCommandsJSONBody, Routes } from 'discord-api-types/v9';
-import { getCommands } from './util';
+import { getAll } from './util';
+import { Command } from './models/Command';
 
 // Run this file with `yarn deploy` or `yarn deploy-prod` to update slash commands
 
@@ -15,17 +16,7 @@ const globalCommands: RESTPostAPIApplicationCommandsJSONBody[] = [];
 const guildCommands: RESTPostAPIApplicationCommandsJSONBody[] = [];
 const registeredCommands: string[] = [];
 
-// const commandFiles = getFilesFromDirectory('src/commands', '.ts');
-
-// for (const file of commandFiles) {
-//   const command: Command = getDefaultExport('./commands', file);
-//   const data = command.data.toJSON();
-//   command.isGlobal ? guildCommands.push(data) : globalCommands.push(data);
-//   registeredCommands.push(command.name);
-// }
-
-getCommands().forEach((command) => {
-  console.log(command);
+getAll<Command>('commands', true).forEach((command: any) => {
   const data = command.data.toJSON();
   command.isGlobal ? guildCommands.push(data) : globalCommands.push(data);
   registeredCommands.push(command.name);

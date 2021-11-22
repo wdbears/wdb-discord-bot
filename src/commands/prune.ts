@@ -1,14 +1,14 @@
 import { SlashCommandBuilder } from '@discordjs/builders';
 import { CommandInteraction, CacheType, TextChannel } from 'discord.js';
 import { ICommand, Command } from '../models/Command';
+import { wait } from '../util';
 
 let prune: ICommand = {
   name: 'prune',
   description: 'Delete the specified number of messages.',
   data: new SlashCommandBuilder().addIntegerOption((option) =>
-    option.setName('amount').setDescription('amount of messages to be deleted').setRequired(true)
+    option.setName('amount').setDescription('the number of messages to delete').setRequired(true)
   ),
-
   execute: async (interaction: CommandInteraction<CacheType>): Promise<void> => {
     const amount = interaction.options.getInteger('amount')!;
 
@@ -23,7 +23,6 @@ let prune: ICommand = {
         .then((messages) => interaction.reply(`Successfully deleted ${messages.size} messages!`));
 
       // Delete reply after 3 seconds
-      const wait = require('util').promisify(setTimeout);
       await wait(3000);
       await interaction.deleteReply();
     } catch (error) {

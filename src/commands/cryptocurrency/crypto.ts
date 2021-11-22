@@ -45,7 +45,7 @@ const crypto: ICommand = {
   ),
   execute: async (interaction: CommandInteraction<CacheType>): Promise<void> => {
     try {
-      const keyword = interaction.options.getString('ticker')!.replace(/_/g, ',').toUpperCase();
+      const keyword = interaction.options.getString('tickers')!.replace(/_/g, ',').toUpperCase();
       if (keyword) {
         const result = formatResult(await getCrypto(keyword));
         interaction.reply(result.toString());

@@ -1,25 +1,16 @@
 import * as fs from 'fs';
-import { Command } from './models/Command';
+
+// Used for asynchronous timeouts
+export const wait = require('util').promisify(setTimeout);
 
 export const removeFileExtension = (file: string, extension: string): string => {
   const trimSize = extension.length;
   return file.substring(0, file.length - trimSize);
 };
 
-// Note - path is relative to this directory, not where it is called from
-export const getDefaultExport = (path: string, file: any): any => {
-  return require(`${path}/${removeFileExtension(file, '.ts')}`).default;
-};
-
-export const getFilesFromDirectory = (directoryPath: string, extension: string) => {
-  return fs.readdirSync(directoryPath).filter((file) => file.endsWith(extension));
-};
-
 // Get all files in a directory (including its subdirectories)
 export const getAllFiles = (dirPath: string, parentDir: string, allFiles: string[]) => {
-  const files = fs.readdirSync(dirPath);
-
-  files.forEach((file) => {
+  fs.readdirSync(dirPath).forEach((file) => {
     const filePath = `${dirPath}/${file}`;
 
     // Recursively call this method for all subdirectories
@@ -37,34 +28,18 @@ export const getAllFiles = (dirPath: string, parentDir: string, allFiles: string
   return allFiles;
 };
 
-// export const setClientCommands = (client: CustomClient) => {
-//   // Populate commands from commands directory
-//   const allFiles = getAllFiles('./src/commands', 'commands/', []);
-//   const commandFiles: string[] = [];
-//   allFiles
-//     .filter((file) => file.endsWith('.ts'))
-//     .forEach((file) => commandFiles.push(removeFileExtension(file, '.ts')));
+// Gets all objects of specified type residing in specified directory
+export const getAll = <T>(dir: string, isDefaultExport?: boolean) => {
+  const allObjects = getAllFiles(`./src/${dir}`, `${dir}/`, []);
+  const objects: T[] = [];
 
-//   commandFiles.forEach((file) => {
-//     const command = require(`./commands/${file}`);
-//     client.commands.set(command.name, command);
-//   });
-// };
-
-export const getAllCommands = () => {
-  const allCommands = getAllFiles('./src/commands', 'commands/', []);
-  const commands: Command[] = [];
-
-  console.log(allCommands);
-
-  allCommands
+  allObjects
     .filter((file) => file.endsWith('.ts'))
     .forEach((file) => {
       file = removeFileExtension(file, '.ts');
-      commands.push(require(`./commands/${file}`));
+      const object = require(`./${dir}/${file}`);
+      isDefaultExport ? objects.push(object.default) : objects.push(object);
     });
 
-  return commands;
+  return objects;
 };
-
-console.log(getAllFiles('./src/events', 'events/', []));
