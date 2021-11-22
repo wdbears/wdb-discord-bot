@@ -67,7 +67,7 @@ const price: ICommand = {
   ),
   execute: async (interaction: CommandInteraction<CacheType>): Promise<void> => {
     try {
-      const coins: string[] = interaction.options.getString('tickers')!.split(',');
+      const coins: string[] = interaction.options.getString('tickers')!.split(/[ ,]+/);
       const embeds: MessageEmbed[] = [];
 
       for (let coin of coins) {
