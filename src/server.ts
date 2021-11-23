@@ -9,7 +9,7 @@ const BOT_TOKEN = isProd ? process.env['BOT_TOKEN']! : process.env['BOT_TOKEN_TE
 
 // Setup listener on port 8080 (required for cloud deployment)
 const app = express();
-const port = process.env['PORT '] || 8080;
+const port = process.env['PORT '] || isProd ? 8080 : 8085;
 
 app.get('/', (_req, res) => {
   res.send('Nom Nom is running properly!');

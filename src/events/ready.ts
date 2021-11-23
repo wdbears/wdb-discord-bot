@@ -1,3 +1,5 @@
+import { client } from '../config/botConfig';
+import { getGasPrices } from '../helpers/gas';
 import IEvent from '../models/IEvent';
 
 const ready: IEvent = {
@@ -5,6 +7,11 @@ const ready: IEvent = {
   once: false,
   execute: (): void => {
     console.log('Ready!');
+
+    setInterval(async () => {
+      let gasPrices = await getGasPrices();
+      client.user?.setActivity(gasPrices);
+    }, 10000);
   }
 };
 

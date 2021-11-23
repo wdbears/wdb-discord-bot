@@ -5,7 +5,7 @@ import { getAll } from '../util';
 
 export const client = new CustomClient();
 
-export const initBot = (token: string) => {
+export const initBot = async (token: string) => {
   // Load commands
   getAll<Command>('commands', true).forEach((command: Command) =>
     client.commands.set(command.name, command)
@@ -25,5 +25,5 @@ export const initBot = (token: string) => {
     console.error('Unhandled promise rejection:', error);
   });
 
-  client.login(token);
+  await client.login(token);
 };
