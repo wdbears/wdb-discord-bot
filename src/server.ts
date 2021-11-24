@@ -1,7 +1,7 @@
 import 'dotenv/config';
 import express from 'express';
 
-import { initBot } from './config/botConfig';
+import { initBot } from './config/bot';
 // import { fbDatabase, fbStorage } from './firebase';
 
 const isProd = process.env['NODE_ENV'] === 'production';

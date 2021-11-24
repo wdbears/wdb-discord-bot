@@ -1,5 +1,5 @@
 import { CommandInteraction } from 'discord.js';
-import { client } from '../config/botConfig';
+import { client } from '../config/bot';
 import IEvent from '../models/IEvent';
 
 const interactionCreate: IEvent = {

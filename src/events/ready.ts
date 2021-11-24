@@ -1,5 +1,5 @@
-import { client } from '../config/botConfig';
-import { getGasPrices } from '../helpers/gas';
+import { client } from '../config/bot';
+import { getGasPrices } from '../helpers/etherscan';
 import IEvent from '../models/IEvent';
 
 const ready: IEvent = {

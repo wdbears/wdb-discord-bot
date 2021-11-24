@@ -22,7 +22,6 @@ const floor: ICommand = {
       .addChoice('bearx', 'bearxlabs')
       .addChoice('soda', 'sodativity')
   ),
-
   execute: async (interaction: CommandInteraction<CacheType>): Promise<void> => {
     const collection: string = interaction.options.getString('collection')!;
     const price = await getFloorPrice(collection);
