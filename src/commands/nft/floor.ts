@@ -3,7 +3,7 @@ import { CacheType, CommandInteraction } from 'discord.js';
 import { Command, ICommand } from '../../models/Command';
 import { fetch } from '../../util';
 
-const getFloorPrice = async (collection: string) => {
+export const getFloorPrice = async (collection: string) => {
   const api = `https://api.opensea.io/api/v1/collection/${collection}/stats?format=json`;
   const res = await fetch(api, { method: 'GET' }).then((res) => res.json());
   return res.stats.floor_price;
@@ -21,6 +21,13 @@ const floor: ICommand = {
       .addChoice('pixels', 'the-pixels-inc')
       .addChoice('bearx', 'bearxlabs')
       .addChoice('soda', 'sodativity')
+      .addChoice('noundles', 'noundles')
+      .addChoice('kaiju', 'kaiju-kingz')
+      .addChoice('galacticapes', 'galacticapes')
+      .addChoice('MAYC', 'mutant-ape-yacht-club')
+      .addChoice('cyberkongz', 'cyberkongz')
+      .addChoice('pudgypenguins', 'pudgypenguins')
+      .addChoice('coolcats', 'cool-cats-nft')
   ),
   execute: async (interaction: CommandInteraction<CacheType>): Promise<void> => {
     const collection: string = interaction.options.getString('collection')!;
