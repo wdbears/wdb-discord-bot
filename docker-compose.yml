@@ -1,9 +1,9 @@
 version: '3.9'
 services:
   server:
-    build: .
+    build: packages/bot/.
     ports:
       - '8080:8080'
     volumes:
-      - .:/usr/src/app
+      - ./packages/bot:/usr/src/app
       - /usr/src/app/node_modules
