@@ -31,4 +31,43 @@ model User {
   name    String?
   posts   Post[]
   profile Profile?
+  Order   Order[]
+  wallet  Wallet[]
+}
+
+model Wallet {
+  user     User    @relation(fields: [userId], references: [id])
+  userId   Int     @unique
+  address  String  @unique
+  primary  Boolean
+  platform String
+}
+
+model Collection {
+  name String @id @unique
+  os   String
+}
+
+model Restaurant {
+  name    String  @id
+  address String?
+  phone   String?
+}
+
+model Order {
+  id           Int         @id @unique
+  createdAt    DateTime    @default(now())
+  updatedAt    DateTime    @updatedAt
+  orderedBy    User        @relation(fields: [userId], references: [id])
+  userId       Int
+  GroupOrder   GroupOrder? @relation(fields: [groupOrderId], references: [id])
+  groupOrderId Int?
+}
+
+model GroupOrder {
+  id        Int      @id @unique
+  createdAt DateTime @default(now())
+  updatedAt DateTime @updatedAt
+  orders    Order[]
+  open      Boolean
 }
