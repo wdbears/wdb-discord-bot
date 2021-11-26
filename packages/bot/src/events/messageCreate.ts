@@ -6,6 +6,11 @@ const messageCreate: IEvent = {
   once: false,
   execute: async (message: Message) => {
     if (!message.author.bot) {
+      if (message.content === '!guard') {
+        const channel = message.channel;
+        await message.delete();
+        await channel.send('GUARD THE TOWER!');
+      }
     }
   }
 };
