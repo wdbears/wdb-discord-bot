@@ -30,6 +30,8 @@ const floor: ICommand = {
       .addChoice('coolcats', 'cool-cats-nft')
       .addChoice('sherbet', 'playsherbet')
       .addChoice('littles', 'thelittlesnft')
+      .addChoice('swampverse', 'swampverseofficial')
+      .addChoice('uncoolcats', 'uncool-cats-nft')
   ),
   execute: async (interaction: CommandInteraction<CacheType>): Promise<void> => {
     const collection: string = interaction.options.getString('collection')!;
