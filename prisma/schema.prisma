@@ -1,0 +1,73 @@
+generator client {
+  provider = "prisma-client-js"
+}
+
+datasource db {
+  provider = "mysql"
+  url      = env("DATABASE_URL")
+}
+
+model Post {
+  id        Int      @id @default(autoincrement())
+  createdAt DateTime @default(now())
+  updatedAt DateTime @updatedAt
+  title     String   @db.VarChar(255)
+  content   String?
+  published Boolean  @default(false)
+  author    User     @relation(fields: [authorId], references: [id])
+  authorId  Int
+}
+
+model Profile {
+  id     Int     @id @default(autoincrement())
+  bio    String?
+  user   User    @relation(fields: [userId], references: [id])
+  userId Int     @unique
+}
+
+model User {
+  id      Int      @id @unique
+  email   String   @unique
+  name    String?
+  posts   Post[]
+  profile Profile?
+  Order   Order[]
+  wallet  Wallet[]
+}
+
+model Wallet {
+  user     User    @relation(fields: [userId], references: [id])
+  userId   Int     @unique
+  address  String  @unique
+  primary  Boolean
+  platform String
+}
+
+model Collection {
+  name String @id @unique
+  os   String
+}
+
+model Restaurant {
+  name    String  @id
+  address String?
+  phone   String?
+}
+
+model Order {
+  id           Int         @id @unique
+  createdAt    DateTime    @default(now())
+  updatedAt    DateTime    @updatedAt
+  orderedBy    User        @relation(fields: [userId], references: [id])
+  userId       Int
+  GroupOrder   GroupOrder? @relation(fields: [groupOrderId], references: [id])
+  groupOrderId Int?
+}
+
+model GroupOrder {
+  id        Int      @id @unique
+  createdAt DateTime @default(now())
+  updatedAt DateTime @updatedAt
+  orders    Order[]
+  open      Boolean
+}
