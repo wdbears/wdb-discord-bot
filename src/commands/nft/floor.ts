@@ -38,6 +38,7 @@ const floor: ICommand = {
       .addChoice('niftyleague', 'niftydegen')
       .addChoice('metazoo', 'metazoo-games-tokens')
       .addChoice('holyheroes', 'holyheroes')
+      .addChoice('voxelville', 'voxel-ville-official')
   ),
   execute: async (interaction: CommandInteraction<CacheType>): Promise<void> => {
     const collection: string = interaction.options.getString('collection')!;
