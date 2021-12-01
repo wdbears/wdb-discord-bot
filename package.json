@@ -24,7 +24,11 @@
     "*.{ts,css,md}": "prettier --write"
   },
   "scripts": {
-    "start": "lerna run start --stream",
-    "bootstrap": "yarn lerna bootstrap"
+    "start": "yarn bootstrap && yarn build-site && yarn start-bot",
+    "start-bot": "lerna run --scope wdb-discord-bot start --stream",
+    "start-site": "lerna run --scope site dev --stream",
+    "build-site": "lerna run --scope site build --stream",
+    "bootstrap": "yarn lerna bootstrap",
+    "lint": "yarn prettier --write ."
   }
 }
