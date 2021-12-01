@@ -32,6 +32,12 @@ const floor: ICommand = {
       .addChoice('littles', 'thelittlesnft')
       .addChoice('swampverse', 'swampverseofficial')
       .addChoice('uncoolcats', 'uncool-cats-nft')
+      .addChoice('clonex', 'clonex-mintvial')
+      .addChoice('webb', 'worldwidewebbland')
+      .addChoice('cryptofoxes', 'cryptofoxes-v2')
+      .addChoice('niftyleague', 'niftydegen')
+      .addChoice('metazoo', 'metazoo-games-tokens')
+      .addChoice('holyheroes', 'holyheroes')
   ),
   execute: async (interaction: CommandInteraction<CacheType>): Promise<void> => {
     const collection: string = interaction.options.getString('collection')!;
