@@ -39,6 +39,7 @@ const floor: ICommand = {
       .addChoice('metazoo', 'metazoo-games-tokens')
       .addChoice('holyheroes', 'holyheroes')
       .addChoice('voxelville', 'voxel-ville-official')
+      .addChoice('syncity', 'syn-city-passes')
   ),
   execute: async (interaction: CommandInteraction<CacheType>): Promise<void> => {
     const collection: string = interaction.options.getString('collection')!;
