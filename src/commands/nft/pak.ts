@@ -20,8 +20,11 @@ const floor: ICommand = {
   name: 'pak',
   description: 'Get Paks net worth',
   execute: async (interaction: CommandInteraction<CacheType>): Promise<void> => {
-    const price = (await getSales()) * 300;
-    await interaction.reply(`Pak has made at least ${formatPrice(price)} from his Merge project.`);
+    const presaleTotal = 173819 * 300;
+    const currentTotal = ((await getSales()) - 173819) * 400;
+    await interaction.reply(
+      `Pak has made at least ${formatPrice(presaleTotal + currentTotal)} from his Merge project.`
+    );
   }
 };
 
