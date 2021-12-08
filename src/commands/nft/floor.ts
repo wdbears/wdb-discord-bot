@@ -40,6 +40,8 @@ const floor: ICommand = {
       .addChoice('holyheroes', 'holyheroes')
       .addChoice('voxelville', 'voxel-ville-official')
       .addChoice('syncity', 'syn-city-passes')
+      .addChoice('akc', 'akc')
+      .addChoice('wnd', 'wizards-dragons-game-v2')
   ),
   execute: async (interaction: CommandInteraction<CacheType>): Promise<void> => {
     const collection: string = interaction.options.getString('collection')!;
