@@ -20,7 +20,6 @@ const floor: ICommand = {
       .addChoice('snails', 'evosnails-nft')
       .addChoice('pixels', 'the-pixels-inc')
       .addChoice('bearx', 'bearxlabs')
-      .addChoice('soda', 'sodativity')
       .addChoice('noundles', 'noundles')
       .addChoice('kaiju', 'kaiju-kingz')
       .addChoice('galacticapes', 'galacticapes')
@@ -30,18 +29,14 @@ const floor: ICommand = {
       .addChoice('coolcats', 'cool-cats-nft')
       .addChoice('sherbet', 'playsherbet')
       .addChoice('littles', 'thelittlesnft')
-      .addChoice('swampverse', 'swampverseofficial')
       .addChoice('uncoolcats', 'uncool-cats-nft')
       .addChoice('clonex', 'clonex-mintvial')
       .addChoice('webb', 'worldwidewebbland')
       .addChoice('cryptofoxes', 'cryptofoxes-v2')
-      .addChoice('niftyleague', 'niftydegen')
       .addChoice('metazoo', 'metazoo-games-tokens')
-      .addChoice('holyheroes', 'holyheroes')
-      .addChoice('voxelville', 'voxel-ville-official')
       .addChoice('syncity', 'syn-city-passes')
-      .addChoice('akc', 'akc')
       .addChoice('wnd', 'wizards-dragons-game-v2')
+      .addChoice('outeridentities', 'neotokyo-outer-identities')
   ),
   execute: async (interaction: CommandInteraction<CacheType>): Promise<void> => {
     const collection: string = interaction.options.getString('collection')!;
