@@ -37,6 +37,7 @@ const floor: ICommand = {
       .addChoice('syncity', 'syn-city-passes')
       .addChoice('wnd', 'wizards-dragons-game-v2')
       .addChoice('outeridentities', 'neotokyo-outer-identities')
+      .addChoice('thingdoms', 'thingdoms-nft-official')
   ),
   execute: async (interaction: CommandInteraction<CacheType>): Promise<void> => {
     const collection: string = interaction.options.getString('collection')!;
