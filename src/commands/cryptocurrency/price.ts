@@ -51,7 +51,7 @@ const getEmbed = (coin: { name: string; price: string }, isBackup?: boolean) => 
     .setColor('#0099ff')
     .setTitle(coin.name.toUpperCase())
     .setURL(api.url)
-    .setAuthor(api.name, undefined, api.home)
+    .setAuthor({ name: api.name, url: api.home })
     .setDescription(coin.price)
     .setTimestamp();
 };
