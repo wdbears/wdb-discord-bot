@@ -9,7 +9,8 @@ WORKDIR /usr/src/app
 COPY package.json yarn.lock ./
 
 RUN apk add --update \
-    && apk add --no-cache --repository http://dl-cdn.alpinelinux.org/alpine/edge/main/ nodejs npm python3\
+    && apk update && apk upgrade \
+    && apk add --no-cache --repository http://dl-cdn.alpinelinux.org/alpine/edge/ nodejs npm python3\
     && apk add --no-cache --virtual .build git curl build-base g++ \
     && npm install -g yarn \
     && yarn install \
