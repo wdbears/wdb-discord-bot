@@ -16,7 +16,7 @@ const globalCommands: RESTPostAPIApplicationCommandsJSONBody[] = [];
 const guildCommands: RESTPostAPIApplicationCommandsJSONBody[] = [];
 const registeredCommands: string[] = [];
 
-getAll<Command>('commands', true).forEach((command: any) => {
+getAll<Command>('commands', true).forEach((command: Command) => {
   const data = command.data.toJSON();
   command.isGlobal ? guildCommands.push(data) : globalCommands.push(data);
   registeredCommands.push(command.name);
@@ -28,5 +28,5 @@ try {
   rest.put(Routes.applicationGuildCommands(CLIENT_ID, GUILD_ID), { body: globalCommands });
   rest.put(Routes.applicationGuildCommands(CLIENT_ID, GUILD_ID), { body: guildCommands });
 } catch (error) {
-  console.error;
+  console.log(error);
 }

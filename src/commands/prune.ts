@@ -3,7 +3,7 @@ import { CommandInteraction, CacheType, TextChannel } from 'discord.js';
 import { ICommand, Command } from '../models/Command';
 import { wait } from '../util';
 
-let prune: ICommand = {
+const prune: ICommand = {
   name: 'prune',
   description: 'Delete the specified number of messages.',
   data: new SlashCommandBuilder().addIntegerOption((option) =>

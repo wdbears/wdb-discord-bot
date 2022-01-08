@@ -79,7 +79,7 @@ const price: ICommand = {
       const coins: string[] = interaction.options.getString('tickers')!.split(/[ ,]+/);
       const result: MessageEmbed[] = [];
 
-      for (let coin of coins) {
+      for (const coin of coins) {
         result.push(await getCrypto(coin));
       }
 

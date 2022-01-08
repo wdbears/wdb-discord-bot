@@ -12,7 +12,7 @@ const interactionCreate: IEvent = {
     if (!command) return;
 
     try {
-      command.execute(interaction);
+      await command.execute(interaction);
     } catch (error) {
       console.error(error);
       await interaction.reply({

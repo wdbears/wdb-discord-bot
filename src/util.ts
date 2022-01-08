@@ -1,3 +1,4 @@
+/* eslint-disable @typescript-eslint/no-var-requires */
 import * as fs from 'fs';
 
 // Used for asynchronous timeouts
@@ -29,7 +30,7 @@ export const getAllFiles = (dirPath: string, parentDir: string, allFiles: string
     // Check if file is in a subdirectory
     const subdirectoryPath = dirPath.split(parentDir)[1];
 
-    // If it is, include the files subdirectory to the path
+    // If it is, include the file's subdirectory to the path
     subdirectoryPath ? allFiles.push(`${subdirectoryPath}/${file}`) : allFiles.push(file);
   });
   return allFiles;

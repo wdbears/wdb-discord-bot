@@ -9,7 +9,7 @@ const ready: IEvent = {
     console.log('Ready!');
 
     setInterval(async () => {
-      let gasPrices = await getGasPrices();
+      const gasPrices = await getGasPrices();
       client.user?.setActivity(gasPrices);
     }, 10000);
   }

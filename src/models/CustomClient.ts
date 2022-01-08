@@ -4,7 +4,7 @@ import { Command } from './Command';
 export default class CustomClient extends Client {
   commands: Collection<string, Command>;
   queue: Map<string, string>;
-  config: Object;
+  config: Record<string, never>;
   interactionCreate!: [client: CustomClient, interaction: Interaction];
 
   constructor() {
