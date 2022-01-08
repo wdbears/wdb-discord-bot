@@ -1,5 +1,5 @@
 import { SlashCommandBuilder } from '@discordjs/builders';
-import { CacheType, CommandInteraction } from 'discord.js';
+import { CommandInteraction } from 'discord.js';
 
 export interface ICommand {
   name: string;
@@ -16,7 +16,7 @@ export class Command {
   isEnabled: boolean;
   isGlobal: boolean;
   data: Omit<SlashCommandBuilder, 'addSubcommand' | 'addSubcommandGroup'>;
-  execute: (interaction: CommandInteraction<CacheType>) => Promise<void>;
+  execute: (interaction: CommandInteraction) => Promise<void>;
 
   constructor(cmd: ICommand) {
     this.name = cmd.name;

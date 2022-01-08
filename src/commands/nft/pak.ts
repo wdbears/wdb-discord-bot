@@ -1,4 +1,4 @@
-import { CacheType, CommandInteraction } from 'discord.js';
+import { CommandInteraction } from 'discord.js';
 import { Command, ICommand } from '../../models/Command';
 import { fetch } from '../../util';
 
@@ -19,7 +19,7 @@ const formatPrice = (price: number) => {
 const floor: ICommand = {
   name: 'pak',
   description: 'Get Paks net worth',
-  execute: async (interaction: CommandInteraction<CacheType>): Promise<void> => {
+  execute: async (interaction: CommandInteraction): Promise<void> => {
     const presaleTotal = 173819 * 300;
     const currentTotal = ((await getSales()) - 173819) * 400;
     await interaction.reply(

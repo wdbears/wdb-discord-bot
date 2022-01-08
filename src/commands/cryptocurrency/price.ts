@@ -1,5 +1,5 @@
 import { SlashCommandBuilder } from '@discordjs/builders';
-import { CommandInteraction, CacheType, MessageEmbed } from 'discord.js';
+import { CommandInteraction, MessageEmbed } from 'discord.js';
 import { Command, ICommand } from '../../models/Command';
 import { fetch } from '../../util';
 
@@ -12,7 +12,7 @@ const getPrice = async (crypto: string, useBackup?: boolean): Promise<any> => {
       : await fetch(api, { method: 'GET' });
     if (res.ok) return res.json();
   } catch (error) {
-    console.error;
+    console.log(error);
   }
 };
 
@@ -74,7 +74,7 @@ const price: ICommand = {
       .setDescription('ticker(s) for which price is being fetched for')
       .setRequired(true)
   ),
-  execute: async (interaction: CommandInteraction<CacheType>): Promise<void> => {
+  execute: async (interaction: CommandInteraction): Promise<void> => {
     try {
       const coins: string[] = interaction.options.getString('tickers')!.split(/[ ,]+/);
       const result: MessageEmbed[] = [];

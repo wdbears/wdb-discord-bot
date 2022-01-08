@@ -1,5 +1,5 @@
 import { SlashCommandBuilder } from '@discordjs/builders';
-import { CacheType, CommandInteraction } from 'discord.js';
+import { CommandInteraction } from 'discord.js';
 import { Command, ICommand } from '../../models/Command';
 import { fetch } from '../../util';
 
@@ -39,7 +39,7 @@ const floor: ICommand = {
       .addChoice('outeridentities', 'neotokyo-outer-identities')
       .addChoice('thingdoms', 'thingdoms-nft-official')
   ),
-  execute: async (interaction: CommandInteraction<CacheType>): Promise<void> => {
+  execute: async (interaction: CommandInteraction): Promise<void> => {
     const collection: string = interaction.options.getString('collection')!;
     const price = await getFloorPrice(collection);
     await interaction.reply(`${collection}'s current floor price is: ${price.toString()}`);
