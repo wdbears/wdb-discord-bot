@@ -16,7 +16,11 @@ const globalCommands: RESTPostAPIApplicationCommandsJSONBody[] = [];
 const guildCommands: RESTPostAPIApplicationCommandsJSONBody[] = [];
 const registeredCommands: string[] = [];
 
-getAll<Command>('commands', true).forEach((command: Command) => {
+getAll<Command>('commands', true).forEach((command: Command, fileName: String) => {
+  if (command == null) {
+    console.log(`Something went wrong trying to register the following slash command: ${fileName}`);
+    return;
+  }
   const data = command.data.toJSON();
   command.isGlobal ? guildCommands.push(data) : globalCommands.push(data);
   registeredCommands.push(command.name);

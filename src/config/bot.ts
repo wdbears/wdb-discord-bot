@@ -7,12 +7,20 @@ export const client = new CustomClient();
 
 export const initBot = async (token: string) => {
   // Load commands
-  getAll<Command>('commands', true).forEach((command: Command) =>
-    client.commands.set(command.name, command)
-  );
+  getAll<Command>('commands', true).forEach((command: Command, _fileName: String) => {
+    if (command == null) {
+      console.log(`Something went wrong trying to load the following command: ${_fileName}`);
+      return;
+    }
+    client.commands.set(command.name, command);
+  });
 
   // Load events
-  getAll<IEvent>('events', true).forEach((event: IEvent) => {
+  getAll<IEvent>('events', true).forEach((event: IEvent, _fileName: String) => {
+    if (event == null) {
+      console.log(`Something went wrong trying to load the following event: ${_fileName}`);
+      return;
+    }
     if (event.once) {
       client.once(event.name, (...args) => event.execute(...args));
     } else {

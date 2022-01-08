@@ -36,18 +36,22 @@ export const getAllFiles = (dirPath: string, parentDir: string, allFiles: string
   return allFiles;
 };
 
-// Gets all objects of specified type residing in specified directory
-export const getAll = <T>(dir: string, isDefaultExport?: boolean) => {
+// Gets a map of all objects of a specified type residing in the given directory
+export const getAll = <T>(dir: string, isDefaultExport?: boolean): Map<String, T> => {
   const allObjects = getAllFiles(`./src/${dir}`, `${dir}/`, []);
-  const objects: T[] = [];
+  const fileToObjectMap = new Map<String, T>();
 
   allObjects
     .filter((file) => file.endsWith('.ts'))
     .forEach((file) => {
       file = removeFileExtension(file, '.ts');
       const object = require(`./${dir}/${file}`);
-      isDefaultExport ? objects.push(object.default) : objects.push(object);
+      if (isDefaultExport) {
+        fileToObjectMap.set(file, object.default);
+      } else {
+        fileToObjectMap.set(file, object);
+      }
     });
 
-  return objects;
+  return fileToObjectMap;
 };
