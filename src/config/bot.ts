@@ -7,7 +7,7 @@ export const client = new CustomClient();
 
 export const initBot = async (token: string) => {
   // Load commands
-  getAll<Command>('commands', true).forEach((command: Command, _fileName: String) => {
+  getAll<Command>('commands', true).forEach((command: Command, _fileName: string) => {
     if (command == null) {
       console.log(`Something went wrong trying to load the following command: ${_fileName}`);
       return;
@@ -16,7 +16,7 @@ export const initBot = async (token: string) => {
   });
 
   // Load events
-  getAll<IEvent>('events', true).forEach((event: IEvent, _fileName: String) => {
+  getAll<IEvent>('events', true).forEach((event: IEvent, _fileName: string) => {
     if (event == null) {
       console.log(`Something went wrong trying to load the following event: ${_fileName}`);
       return;

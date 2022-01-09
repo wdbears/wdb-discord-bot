@@ -17,7 +17,7 @@ export const removeFileExtension = (file: string, extension: string): string => 
 };
 
 // Get all files in a directory (including its subdirectories)
-export const getAllFiles = (dirPath: string, parentDir: string, allFiles: string[]) => {
+export const getAllFiles = (dirPath: string, parentDir: string, allFiles: string[]): string[] => {
   fs.readdirSync(dirPath).forEach((file) => {
     const filePath = `${dirPath}/${file}`;
 
@@ -37,9 +37,9 @@ export const getAllFiles = (dirPath: string, parentDir: string, allFiles: string
 };
 
 // Gets a map of all objects of a specified type residing in the given directory
-export const getAll = <T>(dir: string, isDefaultExport?: boolean): Map<String, T> => {
+export const getAll = <T>(dir: string, isDefaultExport?: boolean): Map<string, T> => {
   const allObjects = getAllFiles(`./src/${dir}`, `${dir}/`, []);
-  const fileToObjectMap = new Map<String, T>();
+  const fileToObjectMap = new Map<string, T>();
 
   allObjects
     .filter((file) => file.endsWith('.ts'))

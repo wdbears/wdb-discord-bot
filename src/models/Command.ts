@@ -1,4 +1,4 @@
-import { SlashCommandBuilder } from '@discordjs/builders';
+import { SlashCommandBuilder, SlashCommandSubcommandsOnlyBuilder } from '@discordjs/builders';
 import { CommandInteraction } from 'discord.js';
 
 export interface ICommand {
@@ -6,7 +6,9 @@ export interface ICommand {
   description: string;
   isEnabled?: boolean;
   isGlobal?: boolean; // when false, the command is guild specific
-  data?: Omit<SlashCommandBuilder, 'addSubcommand' | 'addSubcommandGroup'>;
+  data?:
+    | Omit<SlashCommandBuilder, 'addSubcommand' | 'addSubcommandGroup'>
+    | SlashCommandSubcommandsOnlyBuilder;
   execute(interaction: CommandInteraction): Promise<void>;
 }
 
@@ -15,7 +17,9 @@ export class Command {
   description: string;
   isEnabled: boolean;
   isGlobal: boolean;
-  data: Omit<SlashCommandBuilder, 'addSubcommand' | 'addSubcommandGroup'>;
+  data:
+    | Omit<SlashCommandBuilder, 'addSubcommand' | 'addSubcommandGroup'>
+    | SlashCommandSubcommandsOnlyBuilder;
   execute: (interaction: CommandInteraction) => Promise<void>;
 
   constructor(cmd: ICommand) {
@@ -23,11 +27,11 @@ export class Command {
     this.description = cmd.description;
     this.isEnabled = cmd.isEnabled || true;
     this.isGlobal = cmd.isGlobal || true;
-    this.data = cmd.data ? cmd.data : new SlashCommandBuilder();
-    this.data
-      .setName(this.name)
-      .setDescription(this.description)
-      .setDefaultPermission(this.isEnabled);
+    this.data = cmd.data || new SlashCommandBuilder();
+    this.data.setName(this.name).setDescription(this.description);
+    if (this.data instanceof SlashCommandBuilder) {
+      this.data.setDefaultPermission(this.isEnabled);
+    }
     this.execute = cmd.execute;
   }
 }
