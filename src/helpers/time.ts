@@ -5,6 +5,9 @@ export const parseTime = (time: string) => {
 
   const hours = time.split(':')[0];
   const minutes = time.split(':')[1];
+  if (!isValidInterval(hours) || !isValidInterval(minutes)) {
+    throw Error('Please enter a valid time.');
+  }
 
   const parsedDate = new Date();
   parsedDate.setHours(parseInt(hours!));
@@ -12,4 +15,9 @@ export const parseTime = (time: string) => {
   parsedDate.setSeconds(0);
 
   return parsedDate;
+};
+
+const isValidInterval = (interval: string | undefined): boolean => {
+  if (interval == null) return false;
+  return !(interval.length == 0 || interval.length > 2);
 };
