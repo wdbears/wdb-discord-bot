@@ -1,4 +1,5 @@
 export const choices: [name: string, value: string][] = [
+  ['all', 'all'],
   ['snails', 'evosnails-nft'],
   ['pixels', 'the-pixels-inc'],
   ['noundles', 'noundles'],

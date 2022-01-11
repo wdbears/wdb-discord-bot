@@ -22,8 +22,20 @@ const floor: ICommand = {
   ),
   execute: async (interaction: CommandInteraction): Promise<void> => {
     const collection: string = interaction.options.getString('collection')!;
-    const price = await getFloorPrice(collection);
-    await interaction.reply(`${collection}'s current floor price is: ${price.toString()}`);
+    if (collection === 'all') {
+      await interaction.deferReply();
+      const res: string[] = [];
+      for (const choice of choices) {
+        if (choice[0] === 'all') continue;
+        const floorPrice = await getFloorPrice(choice[1]);
+        res.push(`${choice[0]}'s current floor price is: ${await floorPrice.toString()}\n`);
+      }
+      const resStr = res.sort().toString().replaceAll(',', '');
+      await interaction.editReply(resStr);
+    } else {
+      const price = await getFloorPrice(collection);
+      await interaction.reply(`${collection}'s current floor price is: ${price.toString()}`);
+    }
   }
 };
 
