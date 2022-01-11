@@ -17,13 +17,14 @@ const floorall: ICommand = {
   name: 'floorall',
   description: 'Get all floor prices',
   execute: async (interaction: CommandInteraction): Promise<void> => {
+    await interaction.deferReply();
     const res: string[] = [];
     for (const choice of choices) {
       const floorPrice = await getFloorPrice(choice[1]);
       res.push(`${choice[0]}'s current floor price is: ${await floorPrice.toString()}\n`);
     }
     const resStr = res.sort().toString().replaceAll(',', '');
-    await interaction.reply(resStr);
+    await interaction.editReply(resStr);
   }
 };
 
