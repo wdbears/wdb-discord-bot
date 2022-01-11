@@ -1,6 +1,6 @@
 import { SlashCommandBuilder } from '@discordjs/builders';
 import { CommandInteraction } from 'discord.js';
-import { choices } from '../../move-to-database/shared';
+import { choices } from '../../move-to-database/floor';
 import { Command, ICommand } from '../../models/Command';
 import { fetch } from '../../util';
 
