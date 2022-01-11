@@ -21,10 +21,9 @@ const floor: ICommand = {
       .addChoices(choices)
   ),
   execute: async (interaction: CommandInteraction): Promise<void> => {
-    await interaction.deferReply();
     const collection: string = interaction.options.getString('collection')!;
     const price = await getFloorPrice(collection);
-    await interaction.editReply(`${collection}'s current floor price is: ${price.toString()}`);
+    await interaction.reply(`${collection}'s current floor price is: ${price.toString()}`);
   }
 };
 
