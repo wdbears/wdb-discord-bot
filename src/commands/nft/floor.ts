@@ -25,12 +25,12 @@ const floor: ICommand = {
     if (collection === 'all') {
       await interaction.deferReply();
       const res: string[] = [];
-      for (const choice of choices) {
+      for (const choice of choices.sort()) {
         if (choice[0] === 'all') continue;
         const floorPrice = await getFloorPrice(choice[1]);
         res.push(`${await floorPrice.toString()} - **${choice[0]}**\n`);
       }
-      const resStr = res.sort().toString().replaceAll(',', '');
+      const resStr = res.toString().replaceAll(',', '');
       await interaction.editReply(resStr);
     } else {
       const price = await getFloorPrice(collection);
