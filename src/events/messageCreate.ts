@@ -17,14 +17,19 @@ const messageCreate: IEvent = {
         break;
       }
       case 'afroact': {
-        await message.delete();
-        await channel.lastMessage?.react('<:afro:913940633931108372>');
+        await message.delete().then(() => channel.lastMessage?.react('<:afro:913940633931108372>'));
         break;
       }
       case 'afro': {
         await message.delete();
         await channel.send('<:afro:913940633931108372>');
         break;
+      }
+      case 'police': {
+        await message.delete();
+        await channel.send(
+          '<a:alert:927327198078189588> Wee woo, come here criminal <:homie_kiss:735213862453903421> <a:alert:927327198078189588>'
+        );
       }
     }
   }
