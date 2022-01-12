@@ -53,7 +53,7 @@ const remind: ICommand = {
 
 const queueReminder = (interaction: CommandInteraction, time: Date, eventName: string) => {
   const channel = <TextChannel>interaction.options.getChannel('channel') || interaction.channel;
-  const userMention = <GuildMember>interaction.options.getMentionable('user');
+  const userMention = <GuildMember>interaction.options.getMentionable('user') || interaction.user;
   const roleMention = <Role>interaction.options.getRole('role');
 
   if (time.getTime() <= Date.now()) {
