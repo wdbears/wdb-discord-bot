@@ -6,7 +6,7 @@ import { initBot } from './config/bot';
 const isProd = process.env['NODE_ENV'] === 'production';
 const BOT_TOKEN = isProd ? process.env['BOT_TOKEN']! : process.env['BOT_TOKEN_TEST']!;
 
-// Setup listener on port 8080 (required for cloud deployment)
+// Setup listener on port 8080 (required for cloud deploys)
 const app = express();
 const port = process.env['PORT '] || isProd ? 8080 : 8085;
 
