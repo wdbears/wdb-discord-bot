@@ -13,6 +13,7 @@
     "build": "tsc",
     "serve": "node dist/server.js",
     "deploy": "yarn build && node dist/deploy.js",
+    "start-live-prod": "export NODE_ENV=production && nodemon --watch './**/*.ts' --exec 'ts-node' src/server.ts",
     "start-prod": "export NODE_ENV=production && yarn deploy && yarn serve",
     "deploy-prod": "export NODE_ENV=production && yarn deploy",
     "clean": "rm -rf node_modules dist",

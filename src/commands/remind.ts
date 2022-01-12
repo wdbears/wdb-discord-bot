@@ -58,20 +58,20 @@ const queueReminder = (interaction: CommandInteraction, time: Date, eventName: s
     throw new Error('Reminder time cannot be before current time!');
   }
 
-  const res = '';
+  const res: string[] = [];
 
   if (userMention != null) {
-    res.concat(`@${userMention.username}`);
+    res.push(`@${userMention.username}`);
   }
 
   if (roleMention != null) {
-    res.concat(`@${roleMention.name}`);
+    res.push(`@${roleMention.name}`);
   }
 
-  res.concat(`${eventName} is starting!`);
+  res.push(`${eventName} is starting!`);
 
   setTimeout(() => {
-    channel!.send(res);
+    channel!.send(res.toString());
   }, alertTime - currentTime);
 };
 
