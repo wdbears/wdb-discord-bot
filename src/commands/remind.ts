@@ -69,7 +69,7 @@ const queueReminder = (interaction: CommandInteraction, time: Date, eventName: s
 
   if (roleMention != null) res += `${roleMention} `;
 
-  res += `${eventName} is starting!`;
+  res += `${eventName} event is happening now!`;
 
   setTimeout(() => {
     channel!.send(res);
