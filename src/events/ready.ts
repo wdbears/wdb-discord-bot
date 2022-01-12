@@ -12,7 +12,7 @@ const ready: IEvent = {
     console.log('Ready!');
 
     if (isProd) {
-      const channel = <TextChannel>client.channels.cache.get('logs');
+      const channel = <TextChannel>client.channels.cache.get('930879495227969546');
       if (channel) channel.send(client.user?.username + ' has successfully deployed!');
     }
 
