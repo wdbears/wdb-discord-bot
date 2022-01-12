@@ -1,7 +1,8 @@
-import { CommandInteraction } from 'discord.js';
+import { CommandInteraction, Role, TextChannel, User } from 'discord.js';
 import { Command, ICommand } from '../models/Command';
 import { SlashCommandBuilder } from '@discordjs/builders';
 import { parseTime } from '../helpers/time';
+import { ChannelType } from 'discord-api-types';
 
 const remind: ICommand = {
   name: 'remind',
@@ -15,14 +16,27 @@ const remind: ICommand = {
     )
     .addStringOption((option) =>
       option.setName('time').setDescription('Time for which reminder is set for').setRequired(true)
+    )
+    .addMentionableOption((option) =>
+      option.setName('user').setDescription('The user the reminder is for').setRequired(false)
+    )
+    .addRoleOption((option) =>
+      option.setName('role').setDescription('The role the reminder is for').setRequired(false)
+    )
+    .addChannelOption((option) =>
+      option
+        .addChannelType(ChannelType.GuildText)
+        .setName('channel')
+        .setDescription('The channel the reminder will be sent in')
+        .setRequired(false)
     ),
   execute: async (interaction: CommandInteraction): Promise<void> => {
-    const eventName = interaction.options.getString('event');
+    const eventName = interaction.options.getString('event')!;
     const userInputtedTime = interaction.options.getString('time');
 
     try {
       const time: Date = parseTime(userInputtedTime!);
-      queueReminder(interaction, time);
+      queueReminder(interaction, time, eventName);
       await interaction.reply(`${eventName} reminder is set for ${time.toLocaleString()}`);
     } catch (e: unknown) {
       if (e instanceof Error) {
@@ -32,8 +46,13 @@ const remind: ICommand = {
   }
 };
 
-const queueReminder = (interaction: CommandInteraction, time: Date) => {
-  const channel = interaction.channel;
+const queueReminder = (interaction: CommandInteraction, time: Date, eventName: string) => {
+  const channel = <TextChannel>interaction.options.getChannel('channel') || interaction.channel;
+  const userMention = <User>interaction.options.getMentionable('user');
+  const roleMention = <Role>interaction.options.getRole('role');
+
+  console.log(channel + ' ' + userMention + ' ' + roleMention);
+
   const currentTime = new Date().getTime();
   const alertTime = time.getTime();
 
@@ -41,8 +60,20 @@ const queueReminder = (interaction: CommandInteraction, time: Date) => {
     throw new Error('Reminder time cannot be before current time!');
   }
 
+  const res = '';
+
+  if (userMention != null) {
+    res.concat(`@${userMention.username}`);
+  }
+
+  if (roleMention != null) {
+    res.concat(`@${roleMention.name}`);
+  }
+
+  res.concat(`${eventName} is starting!`);
+
   setTimeout(() => {
-    channel!.send(`@everyone`);
+    channel!.send(res);
   }, alertTime - currentTime);
 };
 

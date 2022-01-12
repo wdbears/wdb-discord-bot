@@ -29,8 +29,12 @@ getAll<Command>('commands', true).forEach((command: Command, fileName: string) =
 const rest = new REST({ version: '9' }).setToken(BOT_TOKEN);
 
 try {
-  rest.put(Routes.applicationGuildCommands(CLIENT_ID, GUILD_ID), { body: globalCommands });
-  rest.put(Routes.applicationGuildCommands(CLIENT_ID, GUILD_ID), { body: guildCommands });
+  rest
+    .put(Routes.applicationGuildCommands(CLIENT_ID, GUILD_ID), { body: globalCommands })
+    .then(() => console.log('Done registering global commands...'));
+  rest
+    .put(Routes.applicationGuildCommands(CLIENT_ID, GUILD_ID), { body: guildCommands })
+    .then(() => console.log('Done registering guild commands...'));
 } catch (error) {
   console.log(error);
 }

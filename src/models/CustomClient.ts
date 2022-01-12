@@ -8,7 +8,13 @@ export default class CustomClient extends Client {
   interactionCreate!: [client: CustomClient, interaction: Interaction];
 
   constructor() {
-    super({ intents: [Intents.FLAGS.GUILDS, Intents.FLAGS.GUILD_MESSAGES] });
+    super({
+      intents: [
+        Intents.FLAGS.GUILDS,
+        Intents.FLAGS.GUILD_MESSAGES,
+        Intents.FLAGS.GUILD_MESSAGE_REACTIONS
+      ]
+    });
     this.commands = new Collection();
     this.queue = new Map();
     this.config = {};
