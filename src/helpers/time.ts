@@ -1,5 +1,6 @@
 export const DEFAULT_TIMEZONE = 'America/New_York';
 export const DEFAULT_TIMEZONE_OFFSET = -5;
+export const MS_PER_HOUR = 3600000;
 
 export const parseTime = (time: string) => {
   if (time.length < 4 || time.length > 7 || !time.includes(':')) {
@@ -20,17 +21,19 @@ export const parseTime = (time: string) => {
     parsedHours = getAmPmAdjustment(time, parsedHours);
   }
 
-  // Factor in timezone
-  const currentTz = Intl.DateTimeFormat().resolvedOptions().timeZone;
-  if (currentTz != DEFAULT_TIMEZONE) {
-    // Change from UTC to EST
-    parsedHours += DEFAULT_TIMEZONE_OFFSET;
-  }
-
   const parsedDate = new Date();
   parsedDate.setHours(parsedHours);
   parsedDate.setMinutes(parsedMinutes);
   parsedDate.setSeconds(0);
+
+  // Factor in timezone
+  const currentTz = Intl.DateTimeFormat().resolvedOptions().timeZone;
+  if (currentTz != DEFAULT_TIMEZONE) {
+    // Change from UTC to EST
+    parsedDate.setMilliseconds(
+      parsedDate.getMilliseconds() + DEFAULT_TIMEZONE_OFFSET * MS_PER_HOUR
+    );
+  }
 
   return parsedDate;
 };
