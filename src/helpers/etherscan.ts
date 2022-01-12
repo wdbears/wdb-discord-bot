@@ -7,7 +7,7 @@ export const getGas = async () => {
   try {
     const res = await fetch(api, { method: 'GET' });
     if (res.ok) return res.json();
-    return res.result;
+    return null;
   } catch (error) {
     console.log(error);
   }
@@ -15,6 +15,7 @@ export const getGas = async () => {
 
 export const getGasPrices = async () => {
   const gas = await getGas();
+  if (gas == null) return null;
   return `⚡${gas.result.FastGasPrice}|🚶${gas.result.ProposeGasPrice}|🐢${gas.result.SafeGasPrice}`;
 };
 
