@@ -57,7 +57,7 @@ const queueReminder = (interaction: CommandInteraction, time: Date, eventName: s
   const roleMention = <Role>interaction.options.getRole('role');
 
   if (time.getTime() <= Date.now()) {
-    throw new Error('Reminder time cannot be before or equal to the current time!');
+    throw new Error('Reminder should come after the current time!');
   }
 
   const currentTime = getZoneAdjustedTime(Date.now(), DEFAULT_TIMEZONE_OFFSET).getTime();
@@ -66,10 +66,14 @@ const queueReminder = (interaction: CommandInteraction, time: Date, eventName: s
   let res = '';
 
   if (userMention != null) {
+    console.log('user');
+    console.log(userMention);
     res += `@${userMention.username}\n`;
   }
 
   if (roleMention != null) {
+    console.log('role');
+    console.log(roleMention);
     res += `@${roleMention.name}\n`;
   }
 

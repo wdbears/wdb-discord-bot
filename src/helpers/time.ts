@@ -24,7 +24,10 @@ export const parseTime = (time: string) => {
   parsedDate.setHours(parsedHours + 5);
   parsedDate.setMinutes(parsedMinutes);
   parsedDate.setSeconds(0);
-  parsedDate.setDate(parsedDate.getDate() - 1);
+
+  if (parsedHours >= 19) {
+    parsedDate.setDate(parsedDate.getDate() - 1);
+  }
 
   return parsedDate;
 };
