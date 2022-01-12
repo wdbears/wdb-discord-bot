@@ -5,7 +5,7 @@ import { Command, ICommand } from '../../models/Command';
 
 const contract: ICommand = {
   name: 'contract',
-  description: 'Get contract details',
+  description: 'Get contract details.',
   data: new SlashCommandBuilder().addStringOption((option) =>
     option.setName('address').setDescription('address to lookup').setRequired(true)
   ),

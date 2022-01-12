@@ -3,6 +3,35 @@ import { CommandInteraction, MessageEmbed } from 'discord.js';
 import { Command, ICommand } from '../../models/Command';
 import { fetch } from '../../util';
 
+const price: ICommand = {
+  name: 'price',
+  description: 'Fetch the current price of a given cryptocurrency.',
+  data: new SlashCommandBuilder().addStringOption((option) =>
+    option
+      .setName('tickers')
+      .setDescription('ticker(s) for which price is being fetched for')
+      .setRequired(true)
+  ),
+  execute: async (interaction: CommandInteraction): Promise<void> => {
+    try {
+      const coins: string[] = interaction.options.getString('tickers')!.split(/[ ,]+/);
+      const result: MessageEmbed[] = [];
+
+      for (const coin of coins) {
+        result.push(await getCrypto(coin));
+      }
+
+      if (result.length === 0) {
+        await interaction.reply('No result found');
+      } else {
+        await interaction.reply({ embeds: result });
+      }
+    } catch (error) {
+      console.log(error);
+    }
+  }
+};
+
 const getPrice = async (crypto: string, useBackup?: boolean): Promise<any> => {
   const api = `https://api.coingecko.com/api/v3/simple/price?ids=${crypto}&vs_currencies=usd`;
   const backup = `https://min-api.cryptocompare.com/data/pricemulti?fsyms=${crypto}&tsyms=USD`;
@@ -63,35 +92,6 @@ export const getCrypto = async (coin: string): Promise<MessageEmbed> => {
     return getEmbed(formatPrice(price), true);
   }
   return getEmbed(formatPrice(price));
-};
-
-const price: ICommand = {
-  name: 'price',
-  description: 'Fetch the current price of a given cryptocurrency.',
-  data: new SlashCommandBuilder().addStringOption((option) =>
-    option
-      .setName('tickers')
-      .setDescription('ticker(s) for which price is being fetched for')
-      .setRequired(true)
-  ),
-  execute: async (interaction: CommandInteraction): Promise<void> => {
-    try {
-      const coins: string[] = interaction.options.getString('tickers')!.split(/[ ,]+/);
-      const result: MessageEmbed[] = [];
-
-      for (const coin of coins) {
-        result.push(await getCrypto(coin));
-      }
-
-      if (result.length === 0) {
-        await interaction.reply('No result found');
-      } else {
-        await interaction.reply({ embeds: result });
-      }
-    } catch (error) {
-      console.log(error);
-    }
-  }
 };
 
 export default new Command(price);

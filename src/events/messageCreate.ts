@@ -17,10 +17,12 @@ const messageCreate: IEvent = {
         break;
       }
       case 'afroact': {
-        await message.react('<:afro:913940633931108372>');
+        await message.delete();
+        await channel.lastMessage?.react('<:afro:913940633931108372>');
         break;
       }
       case 'afro': {
+        await message.delete();
         await channel.send('<:afro:913940633931108372>');
         break;
       }

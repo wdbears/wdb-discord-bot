@@ -12,7 +12,7 @@ export const getFloorPrice = async (collection: string) => {
 
 const floor: ICommand = {
   name: 'floor',
-  description: 'Get floor price',
+  description: 'Get floor price.',
   data: new SlashCommandBuilder().addStringOption((option) =>
     option
       .setName('collection')
@@ -34,7 +34,7 @@ const floor: ICommand = {
       await interaction.editReply(resStr);
     } else {
       const price = await getFloorPrice(collection);
-      await interaction.reply(`${collection}'s current floor price is: ${price.toString()}`);
+      await interaction.reply(`**${collection}'s** current floor price is: ${price.toString()}`);
     }
   }
 };
