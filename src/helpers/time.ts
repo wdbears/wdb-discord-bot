@@ -8,7 +8,7 @@ export const parseTime = (time: string) => {
 
   const hours = time.split(':')[0];
   const minutes = time.split(':')[1];
-  if (!isValidInterval(hours) || !isValidInterval(minutes)) {
+  if (!isValidInterval(hours) || !isValidInterval(minutes?.substring(0, 2))) {
     throw Error('Please enter a valid time.');
   }
 

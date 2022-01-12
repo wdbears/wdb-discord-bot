@@ -8,8 +8,8 @@
   "license": "MIT",
   "private": false,
   "scripts": {
-    "start": "yarn deploy && nodemon --watch './**/*.ts' --exec 'ts-node' src/server.ts",
-    "start-nodeploy": "nodemon --watch './**/*.ts' --exec 'ts-node' src/server.ts",
+    "start": "nodemon --watch './**/*.ts' --exec 'ts-node' src/server.ts",
+    "start-deploy": "yarn deploy && nodemon --watch './**/*.ts' --exec 'ts-node' src/server.ts",
     "build": "tsc",
     "serve": "node dist/server.js",
     "deploy": "yarn build && node dist/deploy.js",

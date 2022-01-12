@@ -16,10 +16,10 @@ const messageCreate: IEvent = {
         message.content.includes('could') ||
         message.content.includes('would')
       ) {
-        await message.react('930619574657904660');
+        await message.react('<:afro:913940633931108372>');
       }
       if (message.content === 'afro') {
-        await channel.send(':afro:');
+        await channel.send('<:afro:913940633931108372>');
       }
     }
   }

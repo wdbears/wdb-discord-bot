@@ -1,7 +1,7 @@
 import { CommandInteraction, Role, TextChannel, User } from 'discord.js';
 import { Command, ICommand } from '../models/Command';
 import { SlashCommandBuilder } from '@discordjs/builders';
-import { parseTime } from '../helpers/time';
+import { DEFAULT_TIMEZONE, parseTime } from '../helpers/time';
 import { ChannelType } from 'discord-api-types';
 
 const remind: ICommand = {
@@ -37,7 +37,7 @@ const remind: ICommand = {
     try {
       const time: Date = parseTime(userInputtedTime!);
       queueReminder(interaction, time, eventName);
-      await interaction.reply(`${eventName} reminder is set for ${time.toLocaleString()}`);
+      await interaction.reply(`${eventName} reminder is set for ${getFormattedTime(time)}`);
     } catch (e: unknown) {
       if (e instanceof Error) {
         await interaction.reply(e.message);
@@ -50,8 +50,6 @@ const queueReminder = (interaction: CommandInteraction, time: Date, eventName: s
   const channel = <TextChannel>interaction.options.getChannel('channel') || interaction.channel;
   const userMention = <User>interaction.options.getMentionable('user');
   const roleMention = <Role>interaction.options.getRole('role');
-
-  console.log(channel + ' ' + userMention + ' ' + roleMention);
 
   const currentTime = new Date().getTime();
   const alertTime = time.getTime();
@@ -75,6 +73,18 @@ const queueReminder = (interaction: CommandInteraction, time: Date, eventName: s
   setTimeout(() => {
     channel!.send(res);
   }, alertTime - currentTime);
+};
+
+const getFormattedTime = (date: Date) => {
+  return Intl.DateTimeFormat('en-US', {
+    hour: 'numeric',
+    minute: 'numeric',
+    second: 'numeric',
+    year: 'numeric',
+    month: 'numeric',
+    day: 'numeric',
+    timeZone: DEFAULT_TIMEZONE
+  }).format(date);
 };
 
 export default new Command(remind);
