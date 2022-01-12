@@ -1,4 +1,4 @@
-import { CommandInteraction, Role, TextChannel, User } from 'discord.js';
+import { CommandInteraction, GuildMember, Role, TextChannel, User } from 'discord.js';
 import { Command, ICommand } from '../models/Command';
 import { SlashCommandBuilder } from '@discordjs/builders';
 import {
@@ -53,7 +53,7 @@ const remind: ICommand = {
 
 const queueReminder = (interaction: CommandInteraction, time: Date, eventName: string) => {
   const channel = <TextChannel>interaction.options.getChannel('channel') || interaction.channel;
-  const userMention = <User>interaction.options.getMentionable('user');
+  const userMention = <GuildMember>interaction.options.getMentionable('user');
   const roleMention = <Role>interaction.options.getRole('role');
 
   if (time.getTime() <= Date.now()) {
@@ -66,18 +66,14 @@ const queueReminder = (interaction: CommandInteraction, time: Date, eventName: s
   let res = '';
 
   if (userMention != null) {
-    console.log('user');
-    console.log(userMention);
-    res += `@${userMention.username}\n`;
+    res += `${userMention.user} `;
   }
 
   if (roleMention != null) {
-    console.log('role');
-    console.log(roleMention);
-    res += `@${roleMention.name}\n`;
+    res += `${roleMention} `;
   }
 
-  res += `${eventName} is starting!\n`;
+  res += `${eventName} is starting!`;
 
   setTimeout(() => {
     channel!.send(res);
