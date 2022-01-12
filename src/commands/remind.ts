@@ -1,7 +1,12 @@
 import { CommandInteraction, Role, TextChannel, User } from 'discord.js';
 import { Command, ICommand } from '../models/Command';
 import { SlashCommandBuilder } from '@discordjs/builders';
-import { DEFAULT_TIMEZONE, parseTime } from '../helpers/time';
+import {
+  DEFAULT_TIMEZONE_OFFSET,
+  getFormattedTime,
+  getZoneAdjustedTime,
+  parseTime
+} from '../helpers/time';
 import { ChannelType } from 'discord-api-types';
 
 const remind: ICommand = {
@@ -51,40 +56,28 @@ const queueReminder = (interaction: CommandInteraction, time: Date, eventName: s
   const userMention = <User>interaction.options.getMentionable('user');
   const roleMention = <Role>interaction.options.getRole('role');
 
-  const currentTime = Date.now();
-  const alertTime = time.getTime();
-
-  if (alertTime < currentTime) {
-    throw new Error('Reminder time cannot be before current time!');
+  if (time.getTime() <= Date.now()) {
+    throw new Error('Reminder time cannot be before or equal to the current time!');
   }
 
-  const res: string[] = [];
+  const currentTime = getZoneAdjustedTime(Date.now(), DEFAULT_TIMEZONE_OFFSET).getTime();
+  const alertTime = getZoneAdjustedTime(time.getTime(), DEFAULT_TIMEZONE_OFFSET).getTime();
+
+  let res = '';
 
   if (userMention != null) {
-    res.push(`@${userMention.username}`);
+    res += `@${userMention.username}\n`;
   }
 
   if (roleMention != null) {
-    res.push(`@${roleMention.name}`);
+    res += `@${roleMention.name}\n`;
   }
 
-  res.push(`${eventName} is starting!`);
+  res += `${eventName} is starting!\n`;
 
   setTimeout(() => {
-    channel!.send(res.toString());
+    channel!.send(res);
   }, alertTime - currentTime);
-};
-
-const getFormattedTime = (date: Date) => {
-  return Intl.DateTimeFormat('en-US', {
-    hour: 'numeric',
-    minute: 'numeric',
-    second: 'numeric',
-    year: 'numeric',
-    month: 'numeric',
-    day: 'numeric',
-    timeZone: DEFAULT_TIMEZONE
-  }).format(date);
 };
 
 export default new Command(remind);

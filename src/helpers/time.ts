@@ -3,13 +3,12 @@ export const DEFAULT_TIMEZONE_OFFSET = -5;
 export const MS_PER_HOUR = 3600000;
 
 export const parseTime = (time: string) => {
-  if (time.length < 4 || time.length > 7 || !time.includes(':')) {
-    throw Error('Please use the following format: 10:25pm or 22:25');
-  }
+  checkFormat(time);
 
-  const hours = time.split(':')[0];
-  const minutes = time.split(':')[1];
-  if (!isValidInterval(hours) || !isValidInterval(minutes?.substring(0, 2))) {
+  const intervals = time.split(':');
+  const hours = intervals[0];
+  const minutes = intervals[1]?.substring(0, 2);
+  if (!isValidInterval(hours) || !isValidInterval(minutes)) {
     throw Error('Please enter a valid time.');
   }
 
@@ -26,21 +25,40 @@ export const parseTime = (time: string) => {
   parsedDate.setMinutes(parsedMinutes);
   parsedDate.setSeconds(0);
 
-  // Factor in timezone
-  const currentTz = Intl.DateTimeFormat().resolvedOptions().timeZone;
-  if (currentTz != DEFAULT_TIMEZONE) {
-    // Change from UTC to EST
-    parsedDate.setMilliseconds(
-      parsedDate.getMilliseconds() + DEFAULT_TIMEZONE_OFFSET * MS_PER_HOUR
-    );
-  }
-
   return parsedDate;
+};
+
+const checkFormat = (time: string) => {
+  if (time.length < 4 || time.length > 7 || !time.includes(':')) {
+    throw Error('Please use the following format: 22:00 or 8:00.');
+  }
 };
 
 const isValidInterval = (interval: string | undefined): boolean => {
   if (interval == null) return false;
-  return !(interval.length == 0 || interval.length > 2);
+  return interval.length == 1 || interval.length == 2;
+};
+
+export const getFormattedTime = (date: Date) => {
+  return Intl.DateTimeFormat('en-US', {
+    hour: 'numeric',
+    minute: 'numeric',
+    second: 'numeric',
+    year: 'numeric',
+    month: 'numeric',
+    day: 'numeric',
+    timeZone: DEFAULT_TIMEZONE,
+    hour12: false
+  }).format(date);
+};
+
+export const getZoneAdjustedTime = (millis: number, timeZoneOffset: number) => {
+  const currentTz = Intl.DateTimeFormat().resolvedOptions().timeZone;
+  let adjustment = 0;
+  if (currentTz != DEFAULT_TIMEZONE) {
+    adjustment = timeZoneOffset * MS_PER_HOUR;
+  }
+  return new Date(millis + adjustment);
 };
 
 // Convert to military time
