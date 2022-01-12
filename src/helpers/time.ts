@@ -44,9 +44,6 @@ export const getFormattedTime = (date: Date) => {
     hour: 'numeric',
     minute: 'numeric',
     second: 'numeric',
-    year: 'numeric',
-    month: 'numeric',
-    day: 'numeric',
     timeZone: DEFAULT_TIMEZONE,
     hour12: false
   }).format(date);
