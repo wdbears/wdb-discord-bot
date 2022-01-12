@@ -28,7 +28,7 @@ const floor: ICommand = {
       for (const choice of choices) {
         if (choice[0] === 'all') continue;
         const floorPrice = await getFloorPrice(choice[1]);
-        res.push(`${choice[0]}'s current floor price is: ${await floorPrice.toString()}\n`);
+        res.push(`**${choice[0]}'s** current floor price is: ${await floorPrice.toString()}\n`);
       }
       const resStr = res.sort().toString().replaceAll(',', '');
       await interaction.editReply(resStr);
