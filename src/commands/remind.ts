@@ -1,4 +1,4 @@
-import { CommandInteraction, GuildMember, Role, TextChannel, User } from 'discord.js';
+import { CommandInteraction, GuildMember, Role, TextChannel } from 'discord.js';
 import { Command, ICommand } from '../models/Command';
 import { SlashCommandBuilder } from '@discordjs/builders';
 import {
