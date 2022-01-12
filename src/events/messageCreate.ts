@@ -28,7 +28,7 @@ const messageCreate: IEvent = {
       case 'police': {
         await message.delete();
         await channel.send(
-          '<a:alert:927327198078189588> Wee woo, come here criminal <:homie_kiss:735213862453903421> <a:alert:927327198078189588>'
+          '<a:alert:930842484580446225> Wee woo, come here criminal <:homie_kiss:735213862453903421> <a:alert:930842484580446225>'
         );
       }
     }
