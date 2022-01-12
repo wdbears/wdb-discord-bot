@@ -51,7 +51,7 @@ const queueReminder = (interaction: CommandInteraction, time: Date, eventName: s
   const userMention = <User>interaction.options.getMentionable('user');
   const roleMention = <Role>interaction.options.getRole('role');
 
-  const currentTime = new Date().getTime();
+  const currentTime = Date.now();
   const alertTime = time.getTime();
 
   if (alertTime < currentTime) {

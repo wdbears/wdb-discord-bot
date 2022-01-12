@@ -17,7 +17,7 @@ export const parseTime = (time: string) => {
 
   // Get am/pm indicator
   if (time.length > 5) {
-    parsedHours += getAmPmAdjustment(time, parsedHours);
+    parsedHours = getAmPmAdjustment(time, parsedHours);
   }
 
   // Factor in timezone
@@ -40,17 +40,21 @@ const isValidInterval = (interval: string | undefined): boolean => {
   return !(interval.length == 0 || interval.length > 2);
 };
 
+// Convert to military time
 const getAmPmAdjustment = (time: string, parsedHours: number): number => {
-  const amPmIndicator = time.slice(-2);
+  const amPmIndicator = time.slice(-2).toLowerCase();
 
-  if (amPmIndicator.toLowerCase() === 'pm') {
-    // Convert to military time
-    if (parsedHours != 12) return 12;
+  if (amPmIndicator != 'am' && amPmIndicator != 'pm') {
+    throw Error('Please enter a valid AM/PM indicator.');
   }
 
-  if (amPmIndicator.toLowerCase() === 'am') {
+  if (amPmIndicator === 'pm') {
+    if (parsedHours != 12) return parsedHours + 12;
+  }
+
+  if (amPmIndicator === 'am') {
     if (parsedHours == 12) return 0;
   }
 
-  throw Error('Please enter a valid AM/PM indicator.');
+  return parsedHours;
 };
