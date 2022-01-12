@@ -17,7 +17,13 @@ const messageCreate: IEvent = {
         break;
       }
       case 'afroact': {
-        await message.delete().then(() => channel.lastMessage?.react('<:afro:913940633931108372>'));
+        await message.delete();
+        channel.messages.fetch({ limit: 1 }).then((messages) => {
+          const lastMessage = messages.first();
+          if (lastMessage && !lastMessage.author.bot) {
+            channel.lastMessage?.react('<:afro:913940633931108372>');
+          }
+        });
         break;
       }
       case 'afro': {
