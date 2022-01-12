@@ -21,9 +21,10 @@ export const parseTime = (time: string) => {
   }
 
   const parsedDate = new Date();
-  parsedDate.setHours(parsedHours);
+  parsedDate.setHours(parsedHours + 5);
   parsedDate.setMinutes(parsedMinutes);
   parsedDate.setSeconds(0);
+  parsedDate.setDate(parsedDate.getDate() - 1);
 
   return parsedDate;
 };
@@ -44,8 +45,10 @@ export const getFormattedTime = (date: Date) => {
     hour: 'numeric',
     minute: 'numeric',
     second: 'numeric',
-    timeZone: DEFAULT_TIMEZONE,
-    hour12: false
+    year: 'numeric',
+    month: 'numeric',
+    day: 'numeric',
+    timeZone: DEFAULT_TIMEZONE
   }).format(date);
 };
 
