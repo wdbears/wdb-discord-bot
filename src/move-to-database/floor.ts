@@ -29,3 +29,7 @@ export const oldChoices: [name: string, value: string][] = [
   ['thingdoms', 'thingdoms'],
   ['webb', 'worldwidewebbland']
 ];
+
+export const linkOptions: [name: string, value: string][] = [
+  ['jira', 'https://wdbears.atlassian.net/jira/software/projects/WDB/boards/1']
+];
