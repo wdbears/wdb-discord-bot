@@ -1,8 +1,8 @@
 import 'dotenv/config';
 import { Message } from 'discord.js';
 import IEvent from '../models/IEvent';
+import { isProd } from '../server';
 
-const isProd = process.env['NODE_ENV'] === 'production';
 const DEVELOPER_USER_ID = isProd ? undefined : process.env['DEVELOPER_USER_ID']!;
 
 const messageCreate: IEvent = {
