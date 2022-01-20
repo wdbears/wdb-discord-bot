@@ -1,14 +1,21 @@
+import 'dotenv/config';
 import { Message } from 'discord.js';
 import IEvent from '../models/IEvent';
+
+const isProd = process.env['NODE_ENV'] === 'production';
+const DEVELOPER_USER_ID = isProd ? undefined : process.env['DEVELOPER_USER_ID']!;
 
 const messageCreate: IEvent = {
   name: 'messageCreate',
   once: false,
   execute: async (message: Message) => {
     const channel = message.channel;
+    const msgAuthor = message.author;
+    const msgAuthorDisplayName = message.member?.displayName;
     const msgContent = message.content.toLowerCase();
 
-    if (message.author.bot) return;
+    if (msgAuthor.bot) return;
+    if (DEVELOPER_USER_ID !== undefined && DEVELOPER_USER_ID !== msgAuthor.id) return;
 
     switch (msgContent) {
       case '!guard': {
@@ -28,7 +35,8 @@ const messageCreate: IEvent = {
       }
       case 'afro': {
         await message.delete();
-        await channel.send('<:afro:913940633931108372>');
+        const afroEmoji = message.guild?.emojis.cache.find((emoji) => emoji.name === 'afro');
+        await channel.send(`${msgAuthorDisplayName} ${afroEmoji}'s you.`);
         break;
       }
       case 'police': {
