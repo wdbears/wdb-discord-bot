@@ -1,76 +1,72 @@
 generator client {
   provider        = "prisma-client-js"
-  previewFeatures = ["referentialIntegrity"]
+  previewFeatures = ["referentialIntegrity", "dataProxy"]
 }
 
 datasource db {
   provider             = "mysql"
   url                  = env("DATABASE_URL")
-  shadowDatabaseUrl    = env("SHADOW_DATABASE_URL")
   referentialIntegrity = "prisma"
 }
 
+enum WalletType {
+  ETHEREUM
+  SOLANA
+  AVALANCHE
+}
+
 model User {
-  id      Int      @id @unique
-  email   String   @unique
-  name    String?
-  posts   Post[]
-  profile Profile?
-  Order   Order[]
-  wallet  Wallet[]
-}
-
-model Post {
-  id        Int      @id @default(autoincrement())
-  createdAt DateTime @default(now())
-  updatedAt DateTime @updatedAt
-  title     String   @db.VarChar(255)
-  content   String?
-  published Boolean  @default(false)
-  author    User     @relation(fields: [authorId], references: [id])
-  authorId  Int
-}
-
-model Profile {
-  id     Int     @id @default(autoincrement())
-  bio    String?
-  user   User    @relation(fields: [userId], references: [id])
-  userId Int     @unique
+  id              Int           @id @default(autoincrement())
+  discordId       Int           @unique
+  discordUsername String
+  active          Boolean
+  alts            UserWallets[]
+  reminders       Reminder[]
 }
 
 model Wallet {
-  user     User    @relation(fields: [userId], references: [id])
-  userId   Int     @unique
-  address  String  @unique
-  primary  Boolean
-  platform String
+  address String        @id
+  type    WalletType
+  twitter String
+  discord String
+  user    UserWallets[]
+}
+
+model UserWallets {
+  user     User   @relation(fields: [userId], references: [id])
+  userId   Int
+  wallet   Wallet @relation(fields: [walletId], references: [address])
+  walletId String
+
+  @@id([userId, walletId])
 }
 
 model Collection {
-  name String @id @unique
-  os   String
+  alias    String  @id
+  slug     String // collection name
+  contract String
+  floor    Decimal
 }
 
-model Restaurant {
-  name    String  @id
-  address String?
-  phone   String?
+model Reminder {
+  id          Int      @id @default(autoincrement())
+  time        DateTime
+  title       String
+  description String
+  channel     String
+  mention     String // Users delimited by semicolon
+  schedule    String
+  creator     User     @relation(fields: [userId], references: [id])
+  userId      Int
 }
 
-model Order {
-  id           Int         @id @unique
-  createdAt    DateTime    @default(now())
-  updatedAt    DateTime    @updatedAt
-  orderedBy    User        @relation(fields: [userId], references: [id])
-  userId       Int
-  GroupOrder   GroupOrder? @relation(fields: [groupOrderId], references: [id])
-  groupOrderId Int?
+model Whale {
+  name    String @id
+  address String
+  twitter String
 }
 
-model GroupOrder {
-  id        Int      @id @unique
-  createdAt DateTime @default(now())
-  updatedAt DateTime @updatedAt
-  orders    Order[]
-  open      Boolean
+model SubcommandLink {
+  name String @id
+  url  String
 }

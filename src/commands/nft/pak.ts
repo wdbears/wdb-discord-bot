@@ -19,6 +19,7 @@ const formatPrice = (price: number) => {
 const floor: ICommand = {
   name: 'pak',
   description: 'Get Paks net worth',
+  isEnabled: false,
   execute: async (interaction: CommandInteraction): Promise<void> => {
     const presaleTotal = 173819 * 300;
     const currentTotal = ((await getSales()) - 173819) * 400;
