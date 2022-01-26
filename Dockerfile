@@ -14,6 +14,7 @@ RUN apk add --update \
     && apk add --no-cache --virtual .build git curl build-base g++ \
     && npm install -g yarn \
     && yarn install \
+    && yarn prisma generate \
     && apk del .build
 
 # If you are building your code for production
