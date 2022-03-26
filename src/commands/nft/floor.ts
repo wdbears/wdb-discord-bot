@@ -1,62 +1,13 @@
 import { SlashCommandBuilder } from '@discordjs/builders';
 import { CommandInteraction, MessageEmbed } from 'discord.js';
 import { Command, ICommand } from '../../models/Command';
-import { choices } from '../../move-to-database/floor';
-import { fetch } from '../../util';
-
-const api = 'https://api.opensea.io/api/v1/collection/';
-
-export const getFloorPrice = async (collection: string) => {
-  const stats = api + `${collection}/stats?format=json`;
-
-  const res = await fetch(stats, { method: 'GET' })
-    .then((res) => res.json())
-    .catch(() => console.log(`${collection} is not a valid OpenSea collection.`));
-
-  return res.stats == undefined ? null : res.stats.floor_price;
-};
-
-export const getImageUrl = async (collection: string) => {
-  const imageUrlEndpoint = api + `${collection}?format=json`;
-
-  const res = await fetch(imageUrlEndpoint, { method: 'GET' })
-    .then((res) => res.json())
-    .catch(() => console.log(`${collection} is not a valid OpenSea collection.`));
-
-  return res.collection == undefined ? null : res.collection.image_url;
-};
-
-async function getAllFloorPrices() {
-  const res: Map<string, string> = new Map();
-  const validChoices = choices.sort().filter((c) => c[0] != 'all');
-
-  for (const choice of validChoices) {
-    const floorPrice = await getFloorPrice(choice[1]);
-    if (floorPrice == null) {
-      res.set(choice[0], 'Error retrieving price');
-    } else {
-      res.set(choice[0], await floorPrice.toString());
-    }
-  }
-
-  return res;
-}
-
-const createEmbed = () => {
-  return new MessageEmbed()
-    .setColor('#0099ff')
-    .setTitle('Floor Prices')
-    .setURL('https://opensea.io')
-    .setDescription('Current floor prices for tracked OpenSea collections')
-    .setThumbnail('https://storage.googleapis.com/opensea-static/Logomark/Logomark-Blue.png')
-    .setTimestamp();
-};
-
-const updateEmbed = async (collectionToFloorMap: Map<string, string>, embed: MessageEmbed) => {
-  collectionToFloorMap.forEach((collection, price) => {
-    embed.addField(price, collection, true);
-  });
-};
+import {
+  allCollections,
+  allCollectionsMap,
+  bluechips,
+  choices
+} from '../../move-to-database/floor';
+import { fetch, getBuilderChoices } from '../../util';
 
 const floor: ICommand = {
   name: 'floor',
@@ -72,42 +23,99 @@ const floor: ICommand = {
             .setName('collection')
             .setDescription('The NFT collection for which the floor is being retrieved')
             .setRequired(true)
-            .addChoices(choices)
+            .addChoices(getBuilderChoices(choices))
+        )
+    )
+    .addSubcommand((subcommand) =>
+      subcommand
+        .setName('bluechips')
+        .setDescription('List of all blue chip collections')
+        .addStringOption((option) =>
+          option
+            .setName('collection')
+            .setDescription('The NFT collection for which the floor is being retrieved')
+            .setRequired(true)
+            .addChoices(getBuilderChoices(bluechips))
         )
     ),
   execute: async (interaction: CommandInteraction): Promise<void> => {
     const subcommand = interaction.options.getSubcommand();
 
+    const startTime = Date.now();
     const resultEmbed = createEmbed();
 
     if (subcommand == 'all') {
+      const startTime = Date.now();
       await interaction.deferReply();
       const prices = await getAllFloorPrices();
-      await updateEmbed(prices, resultEmbed);
-      await interaction.editReply({ embeds: [resultEmbed] });
+      updateEmbed(prices, resultEmbed, startTime);
+      interaction.editReply({ embeds: [resultEmbed] });
+      return;
     }
 
-    if (subcommand == 'collections') {
+    if (subcommand == 'collections' || subcommand == 'bluechips') {
       const collection: string = interaction.options.getString('collection')!;
-      const price = await getFloorPrice(collection);
+      const collectionToPrice = await getFloorPrice(collection);
 
-      if (price == null) {
+      if (collectionToPrice == null) {
         await interaction.reply(`Error retrieving ${collection}!`);
         return;
       }
 
-      const map = new Map();
-      map.set(collection, price.toString());
-      updateEmbed(map, resultEmbed);
+      updateEmbed([collectionToPrice], resultEmbed, startTime);
 
       const imageURL = await getImageUrl(collection);
       if (imageURL != null) {
         resultEmbed.setThumbnail(await imageURL);
       }
 
-      await interaction.reply({ embeds: [resultEmbed] });
+      interaction.reply({ embeds: [resultEmbed] });
     }
   }
+};
+
+const getCollection = async (collection: string) => {
+  const endpoint = `https://api.opensea.io/api/v1/collection/${collection}?format=json`;
+
+  const res = await fetch(endpoint, { method: 'GET' })
+    .then((res) => res.json())
+    .catch(() => console.log(`${collection} is not a valid OpenSea collection.`));
+
+  return res.collection;
+};
+
+const getFloorPrice = async (osCollection: string) => {
+  const collection = await getCollection(osCollection);
+  if (collection == undefined) return null;
+  const simpleName = allCollectionsMap.get(osCollection);
+  return { name: simpleName, price: collection.stats.floor_price };
+};
+
+const getImageUrl = async (osCollection: string) => {
+  const collection = await getCollection(osCollection);
+  return collection == undefined ? null : collection.image_url;
+};
+
+async function getAllFloorPrices(): Promise<any[]> {
+  const promises = allCollections.map(({ value }) => getFloorPrice(value));
+  return await Promise.all(promises);
+}
+
+const createEmbed = () => {
+  return new MessageEmbed()
+    .setColor('#0099ff')
+    .setTitle('Floor Prices')
+    .setURL('https://opensea.io')
+    .setDescription('Current floor prices for tracked OpenSea collections')
+    .setThumbnail('https://storage.googleapis.com/opensea-static/Logomark/Logomark-Blue.png')
+    .setTimestamp();
+};
+
+const updateEmbed = (collectionToFloorMap: any[], embed: MessageEmbed, startTime: number) => {
+  collectionToFloorMap.forEach((entry) => {
+    embed.addField(entry['name'], entry['price'].toString(), true);
+  });
+  embed.setFooter({ text: `Lookup took ${Date.now() - startTime}ms` }); // Add performance stats
 };
 
 export default new Command(floor);

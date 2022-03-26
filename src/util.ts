@@ -55,3 +55,9 @@ export const getAll = <T>(dir: string, isDefaultExport?: boolean): Map<string, T
 
   return fileToObjectMap;
 };
+
+export const getBuilderChoices = (json: { key: string; value: string }[]) => {
+  const res: [name: string, value: string][] = [];
+  json.forEach(({ key, value }) => res.push([key, value]));
+  return res;
+};
