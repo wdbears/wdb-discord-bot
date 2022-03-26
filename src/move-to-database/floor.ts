@@ -7,6 +7,7 @@ export const choices: { key: string; value: string }[] = [
   { key: 'kaiju', value: 'kaiju-kingz' },
   { key: 'littles', value: 'thelittlesnft' },
   { key: 'metazoo', value: 'metazoo-games-tokens' },
+  { key: 'nanopass', value: 'projectnanopass' },
   { key: 'niftyleague', value: 'niftydegen' },
   { key: 'noundles', value: 'noundles' },
   { key: 'outeridentities', value: 'neotokyo-outer-identities' },
