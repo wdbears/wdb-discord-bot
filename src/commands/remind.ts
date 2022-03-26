@@ -7,7 +7,8 @@ import {
   getZoneAdjustedTime,
   parseTime
 } from '../helpers/time';
-import { ChannelType } from 'discord-api-types';
+
+import { ChannelType } from 'discord-api-types/v10';
 
 const remind: ICommand = {
   name: 'remind',
@@ -30,7 +31,7 @@ const remind: ICommand = {
     )
     .addChannelOption((option) =>
       option
-        .addChannelType(ChannelType.GuildText)
+        .addChannelType(<any>ChannelType.GuildText)
         .setName('channel')
         .setDescription('The channel the reminder will be sent in')
         .setRequired(false)

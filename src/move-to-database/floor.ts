@@ -1,5 +1,4 @@
-export const choices: [name: string, value: string][] = [
-  ['all', 'all'],
+export const choices: [simpleName: string, collectionName: string][] = [
   ['snails', 'evosnails-nft'],
   ['pixels', 'the-pixels-inc'],
   ['noundles', 'noundles'],
@@ -15,7 +14,7 @@ export const choices: [name: string, value: string][] = [
   ['clonex', 'clonex-mintvial'],
   ['cryptofoxes', 'cryptofoxes-v2'],
   ['metazoo', 'metazoo-games-tokens'],
-  ['syncity', 'syn-city-passes'],
+  ['syncity', 'mobland-genesis-synr-pass'],
   ['outeridentities', 'neotokyo-outer-identities'],
   ['creepz', 'genesis-creepz'],
   ['niftyleague', 'niftydegen'],

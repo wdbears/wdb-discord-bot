@@ -22,7 +22,7 @@ getAll<Command>('commands', true).forEach((command: Command, fileName: string) =
     return;
   }
   const data = command.data.toJSON();
-  command.isGlobal ? guildCommands.push(data) : globalCommands.push(data);
+  command.isGlobal ? guildCommands.push(<any>data) : globalCommands.push(<any>data);
   registeredCommands.push(command.name);
 });
 
