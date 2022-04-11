@@ -113,7 +113,11 @@ const createEmbed = () => {
 
 const updateEmbed = (collectionToFloorMap: any[], embed: MessageEmbed, startTime: number) => {
   collectionToFloorMap.forEach((entry) => {
-    embed.addField(entry['name'], entry['price'].toString(), true);
+    try {
+      embed.addField(entry['name'], entry['price'].toString(), true);
+    } catch (error) {
+      console.log('Issue with ' + entry);
+    }
   });
   embed.setFooter({ text: `Lookup took ${Date.now() - startTime}ms` }); // Add performance stats
 };
