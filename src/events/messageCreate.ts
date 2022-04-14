@@ -44,6 +44,13 @@ const messageCreate: IEvent = {
         await channel.send(
           '<a:alert:930842484580446225> Wee woo, come here criminal <:homie_kiss:735213862453903421> <a:alert:930842484580446225>'
         );
+        break;
+      }
+      case 'hdafro': {
+        await message.delete();
+        await channel.send(
+          'https://cdn.discordapp.com/attachments/889971045044457524/963498440753565776/s9olryMU_400x400.jpg'
+        );
       }
     }
   }
