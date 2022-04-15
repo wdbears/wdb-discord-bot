@@ -43,10 +43,10 @@ model UserWallets {
 }
 
 model Collection {
-  alias    String  @id
-  slug     String // collection name
-  contract String
-  floor    Decimal
+  alias      String  @id
+  slug       String // collection name
+  contract   String // Address of associated contract
+  isBluechip Boolean @default(false)
 }
 
 model Reminder {
