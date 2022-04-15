@@ -11,7 +11,7 @@ RUN npm ci --quiet
 
 COPY . .
 
-RUN npm run init-prisma
+RUN npm run init:prisma
 RUN npm run build
 
 # <----- Stage 2 ------>
