@@ -112,13 +112,16 @@ const createEmbed = () => {
 };
 
 const updateEmbed = (collectionToFloorMap: any[], embed: MessageEmbed, startTime: number) => {
+  let res = '';
   collectionToFloorMap.forEach((entry) => {
     try {
-      embed.addField(entry['name'], entry['price'].toString(), false);
+      res += `**${entry['name']}** - ${entry['price']}\n`;
+      // embed.addField(entry['name'], entry['price'].toString(), false);
     } catch (error) {
       console.log('Issue with ' + entry);
     }
   });
+  embed.setDescription(res);
   embed.setFooter({ text: `Lookup took ${Date.now() - startTime}ms` }); // Add performance stats
 };
 
