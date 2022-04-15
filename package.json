@@ -11,7 +11,7 @@
     "start": "nodemon src/server.ts",
     "build": "rimraf ./dist && tsc",
     "deploy": "npm run build && node dist/deploy.js",
-    "clean": "rimraf node_modules dist",
+    "clean": "npx rimraf node_modules dist",
     "clean-install": "npm run clean && npm install &&  npm run init-prisma",
     "lint": "eslint src/**/* && prettier --write .",
     "init-prisma": "prisma generate"
