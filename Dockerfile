@@ -1,28 +1,37 @@
-FROM alpine:latest
+# syntax=docker/dockerfile:1
 
-# Create app directory
+# <----- Stage 1 ------>
+FROM node:latest AS build
+
 WORKDIR /usr/src/app
 
-# Install app dependencies
-# A wildcard is used to ensure both package.json AND package-lock.json are copied
-# where available (npm@5+)
-COPY package.json yarn.lock ./
+COPY package*.json ./
 
-RUN apk add --update \
-    && apk update && apk upgrade \
-    && apk add --no-cache --repository https://dl-cdn.alpinelinux.org/alpine/edge/ nodejs npm python3\
-    && apk add --no-cache --virtual .build git curl build-base g++ \
-    && npm install -g yarn \
-    && yarn install \
-    && apk del .build
+RUN npm ci --quiet
 
-# If you are building your code for production
-# RUN npm ci --only=production
-
-# Bundle app source
 COPY . .
+
+RUN npm run init-prisma
+RUN npm run build
+
+# <----- Stage 2 ------>
+FROM node@sha256:28bed508446db2ee028d08e76fb47b935defa26a84986ca050d2596ea67fd506 as production
+
+ARG NODE_ENV=production
+ENV NODE_ENV=${NODE_ENV}
+
+WORKDIR /usr/src/app
+
+COPY package*.json ./
+RUN npm ci --only=production
+
+RUN apk add --no-cache --virtual .build-deps git curl python3 build-base g++
+
+USER node
+COPY --chown=node:node --from=build /usr/src/app/node_modules/@prisma/client ./node_modules/@prisma/client
+COPY --chown=node:node --from=build /usr/src/app/node_modules/.prisma/client ./node_modules/.prisma/client
+COPY --chown=node:node --from=build /usr/src/app/dist ./src
 
 EXPOSE 8080
 
-# Run
-CMD [ "yarn", "start-prod" ]
+CMD ["node", "src/server.js"]

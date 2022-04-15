@@ -1,4 +1,16 @@
+Dockerfile
+docker-compose.yml
 node_modules
 npm-debug.log
+README.md
+.dockerignore
+.env
+.env.example
+.eslintignore
+.eslintrc
+.git
+.gitignore
+.nvmrc
+.prettierignore
+.prettierrc
 .vscode
-package-lock.json

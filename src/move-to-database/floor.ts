@@ -3,7 +3,6 @@ export const choices: { key: string; value: string }[] = [
   { key: 'creepz', value: 'genesis-creepz' },
   { key: 'cryptofoxes', value: 'cryptofoxes-v2' },
   { key: 'cyberkongz', value: 'cyberkongz' },
-  { key: 'galacticapes', value: 'galacticapes' },
   { key: 'kaiju', value: 'kaiju-kingz' },
   { key: 'littles', value: 'thelittlesnft' },
   { key: 'metazoo', value: 'metazoo-games-tokens' },
@@ -13,10 +12,8 @@ export const choices: { key: string; value: string }[] = [
   { key: 'outeridentities', value: 'neotokyo-outer-identities' },
   { key: 'pixels', value: 'the-pixels-inc' },
   { key: 'pudgypenguins', value: 'pudgypenguins' },
-  { key: 'sherbet', value: 'playsherbet' },
   { key: 'snails', value: 'evosnails-nft' },
   { key: 'syncity', value: 'mobland-genesis-synr-pass' },
-  { key: 'uncoolcats', value: 'uncool-cats-nft' },
   { key: 'zenape', value: 'zenapenft' }
 ];
 

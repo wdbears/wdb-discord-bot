@@ -20,6 +20,12 @@ app.get('/', (_req, res) => {
 
 app.listen(port, () => {
   console.log(`Nom Nom listening at http://localhost:${port}`);
+  console.log(`Environment:${isProd ? 'PROD' : 'DEV'}`);
 });
+
+function handle(signal: any) {
+  console.log(`*^!@4=> Received event: ${signal}`);
+}
+process.on('SIGHUP', handle);
 
 initBot(BOT_TOKEN);
