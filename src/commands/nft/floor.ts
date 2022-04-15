@@ -114,7 +114,7 @@ const createEmbed = () => {
 const updateEmbed = (collectionToFloorMap: any[], embed: MessageEmbed, startTime: number) => {
   collectionToFloorMap.forEach((entry) => {
     try {
-      embed.addField(entry['name'], entry['price'].toString(), true);
+      embed.addField(entry['name'], entry['price'].toString(), false);
     } catch (error) {
       console.log('Issue with ' + entry);
     }
