@@ -4,6 +4,8 @@ import * as fs from 'fs';
 // Used for asynchronous timeouts
 export const wait = require('util').promisify(setTimeout);
 
+export const isProdEnv = () => process.env['NODE_ENV'] === 'production';
+
 // alternative way of importing node-fetch since it uses ESM3 (not supported in current config)
 const _importDynamic = new Function('modulePath', 'return import(modulePath)');
 export async function fetch(...args: any) {
@@ -40,11 +42,12 @@ export const getAllFiles = (dirPath: string, parentDir: string, allFiles: string
 export const getAll = <T>(dir: string, isDefaultExport?: boolean): Map<string, T> => {
   const allObjects = getAllFiles(`./src/${dir}`, `${dir}/`, []);
   const fileToObjectMap = new Map<string, T>();
+  const fileExtension = isProdEnv() ? '.js' : '.ts';
 
   allObjects
-    .filter((file) => file.endsWith('.ts'))
+    .filter((file) => file.endsWith(fileExtension))
     .forEach((file) => {
-      file = removeFileExtension(file, '.ts');
+      file = removeFileExtension(file, fileExtension);
       const object = require(`./${dir}/${file}`);
       if (isDefaultExport) {
         fileToObjectMap.set(file, object.default);

@@ -2,9 +2,10 @@ import 'dotenv/config';
 import express from 'express';
 import { initBot } from './config/bot';
 import { PrismaClient } from '@prisma/client';
+import { isProdEnv } from './util';
 // import path from 'path';
 
-export const isProd = process.env['NODE_ENV'] === 'production';
+const isProd = isProdEnv();
 const BOT_TOKEN = isProd ? process.env['BOT_TOKEN']! : process.env['BOT_TOKEN_TEST']!;
 
 export const prisma = new PrismaClient();
