@@ -11,7 +11,7 @@ export const prisma = new PrismaClient();
 
 // Setup listener on port 8080 (required for cloud deploys)
 const app = express();
-const port = process.env['PORT '] || isProd ? 8080 : 8085;
+const port = process.env['PORT'] || isProd ? 8080 : 8085;
 
 app.get('/', (_req, res) => {
   res.send('Nom Nom is running properly!');
