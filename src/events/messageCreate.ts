@@ -51,6 +51,14 @@ const messageCreate: IEvent = {
         await channel.send(
           'https://cdn.discordapp.com/attachments/889971045044457524/963498440753565776/s9olryMU_400x400.jpg'
         );
+        break;
+      }
+      case 'smluis': {
+        await message.delete();
+        await channel.send(
+          'https://cdn.discordapp.com/attachments/889971045044457524/964331065265246258/unknown.png'
+        );
+        break;
       }
     }
   }
