@@ -11,7 +11,7 @@ const links: ICommand = {
       .setName('link')
       .setDescription('Specify which link you want to get.')
       .setRequired(true)
-      .addChoices(linkOptions)
+      .addChoices(...linkOptions)
   ),
   execute: async (interaction: CommandInteraction): Promise<void> => {
     const link: string = interaction.options.getString('link')!;

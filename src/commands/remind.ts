@@ -31,7 +31,7 @@ const remind: ICommand = {
     )
     .addChannelOption((option) =>
       option
-        .addChannelType(<any>ChannelType.GuildText)
+        .addChannelTypes(<any>ChannelType.GuildText)
         .setName('channel')
         .setDescription('The channel the reminder will be sent in')
         .setRequired(false)

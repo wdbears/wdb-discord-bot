@@ -15,7 +15,7 @@ const messageCreate: IEvent = {
     const msgContent = message.content.toLowerCase();
 
     if (msgAuthor.bot) return;
-    if (DEVELOPER_USER_ID !== undefined && DEVELOPER_USER_ID !== msgAuthor.id) return;
+    if (DEVELOPER_USER_ID !== undefined && DEVELOPER_USER_ID !== msgAuthor.id) return; // TODO remove this logic by setting proper permissions for bots
 
     switch (msgContent) {
       case '!guard': {

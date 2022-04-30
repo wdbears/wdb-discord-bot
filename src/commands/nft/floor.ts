@@ -1,13 +1,8 @@
 import { SlashCommandBuilder } from '@discordjs/builders';
 import { CommandInteraction, MessageEmbed } from 'discord.js';
 import { Command, ICommand } from '../../models/Command';
-import {
-  allCollections,
-  allCollectionsMap,
-  bluechips,
-  choices
-} from '../../move-to-database/floor';
-import { fetch, getBuilderChoices } from '../../util';
+import { collections, sortedCollections, collectionsMap } from '../../move-to-database/floor';
+import { fetch } from '../../util';
 
 const floor: ICommand = {
   name: 'floor',
@@ -23,7 +18,7 @@ const floor: ICommand = {
             .setName('collection')
             .setDescription('The NFT collection for which the floor is being retrieved')
             .setRequired(true)
-            .addChoices(getBuilderChoices(choices))
+            .addChoices(...collections.filter((c) => !c.isBlueChip))
         )
     )
     .addSubcommand((subcommand) =>
@@ -35,7 +30,7 @@ const floor: ICommand = {
             .setName('collection')
             .setDescription('The NFT collection for which the floor is being retrieved')
             .setRequired(true)
-            .addChoices(getBuilderChoices(bluechips))
+            .addChoices(...collections.filter((c) => c.isBlueChip))
         )
     ),
   execute: async (interaction: CommandInteraction): Promise<void> => {
@@ -87,7 +82,7 @@ const getCollection = async (collection: string) => {
 const getFloorPrice = async (osCollection: string) => {
   const collection = await getCollection(osCollection);
   if (collection == undefined) return null;
-  const simpleName = allCollectionsMap.get(osCollection);
+  const simpleName = collectionsMap.get(osCollection);
   return { name: simpleName, price: collection.stats.floor_price };
 };
 
@@ -97,7 +92,7 @@ const getImageUrl = async (osCollection: string) => {
 };
 
 async function getAllFloorPrices(): Promise<any[]> {
-  const promises = allCollections.map(({ value }) => getFloorPrice(value));
+  const promises = sortedCollections.map(({ value }) => getFloorPrice(value));
   return await Promise.all(promises);
 }
 

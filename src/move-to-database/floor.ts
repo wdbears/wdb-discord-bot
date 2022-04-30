@@ -1,44 +1,42 @@
-export const choices: { key: string; value: string }[] = [
-  { key: 'anonymice', value: 'anonymicebreeding' },
-  { key: 'creepz', value: 'genesis-creepz' },
-  { key: 'cryptofoxes', value: 'cryptofoxes-v2' },
-  { key: 'cyberkongz', value: 'cyberkongz' },
-  { key: 'kaiju', value: 'kaiju-kingz' },
-  { key: 'littles', value: 'thelittlesnft' },
-  { key: 'nanopass', value: 'projectnanopass' },
-  { key: 'niftyleague', value: 'niftydegen' },
-  { key: 'noundles', value: 'noundles' },
-  { key: 'outeridentities', value: 'neotokyo-outer-identities' },
-  { key: 'pixels', value: 'the-pixels-inc' },
-  { key: 'pudgypenguins', value: 'pudgypenguins' },
-  { key: 'snails', value: 'evosnails-nft' },
-  { key: 'syncity', value: 'mobland-genesis-synr-pass' },
-  { key: 'zenape', value: 'zenapenft' }
+export const collections: { name: string; value: string; isBlueChip?: boolean }[] = [
+  { name: 'anonymice', value: 'anonymicebreeding' },
+  { name: 'creepz', value: 'genesis-creepz' },
+  { name: 'cryptofoxes', value: 'cryptofoxes-v2' },
+  { name: 'cyberkongz', value: 'cyberkongz' },
+  { name: 'kaiju', value: 'kaiju-kingz' },
+  { name: 'littles', value: 'thelittlesnft' },
+  { name: 'nanopass', value: 'projectnanopass' },
+  { name: 'niftyleague', value: 'niftydegen' },
+  { name: 'noundles', value: 'noundles' },
+  { name: 'outeridentities', value: 'neotokyo-outer-identities' },
+  { name: 'pixels', value: 'the-pixels-inc' },
+  { name: 'pudgypenguins', value: 'pudgypenguins' },
+  { name: 'snails', value: 'evosnails-nft' },
+  { name: 'syncity', value: 'mobland-genesis-synr-pass' },
+  { name: 'zenape', value: 'zenapenft' },
+  { name: 'azuki', value: 'azuki', isBlueChip: true },
+  { name: 'bakc', value: 'bored-ape-kennel-club', isBlueChip: true },
+  { name: 'bayc', value: 'boredapeyachtclub', isBlueChip: true },
+  { name: 'clonex', value: 'clonex-mintvial', isBlueChip: true },
+  { name: 'coolcats', value: 'cool-cats-nft', isBlueChip: true },
+  { name: 'doodles', value: 'doodles-official', isBlueChip: true },
+  { name: 'mayc', value: 'mutant-ape-yacht-club', isBlueChip: true }
 ];
 
-export const bluechips: { key: string; value: string }[] = [
-  { key: 'azuki', value: 'azuki' },
-  { key: 'bakc', value: 'bored-ape-kennel-club' },
-  { key: 'bayc', value: 'boredapeyachtclub' },
-  { key: 'clonex', value: 'clonex-mintvial' },
-  { key: 'coolcats', value: 'cool-cats-nft' },
-  { key: 'doodles', value: 'doodles-official' },
-  { key: 'mayc', value: 'mutant-ape-yacht-club' }
-];
+export const sortedCollections: { name: string; value: string }[] = JSON.parse(
+  JSON.stringify(collections)
+); // deep copy
 
-export const allCollections: { key: string; value: string }[] = JSON.parse(JSON.stringify(choices)); // deep copy
-allCollections.push(...bluechips);
-allCollections.sort((a, b) => {
-  if (a.key > b.key) return 1;
-  if (a.key < b.key) return -1;
+sortedCollections.sort((a, b) => {
+  if (a.name > b.name) return 1;
+  if (a.name < b.name) return -1;
   return 0;
 });
 
 // Reverse mappings to lookup simple name; TODO - make it a bidirectional map for cleanup
-export const allCollectionsMap: Map<string, string> = new Map();
-choices.forEach(({ key, value }) => allCollectionsMap.set(value, key));
-bluechips.forEach(({ key, value }) => allCollectionsMap.set(value, key));
+export const collectionsMap: Map<string, string> = new Map();
+collections.forEach(({ name, value }) => collectionsMap.set(value, name));
 
-export const linkOptions: [key: string, value: string][] = [
-  ['jira', 'https://wdbears.atlassian.net/jira/software/projects/WDB/boards/1']
+export const linkOptions: { name: string; value: string }[] = [
+  { name: 'jira', value: 'https://wdbears.atlassian.net/jira/software/projects/WDB/boards/1' }
 ];
