@@ -10,10 +10,10 @@
   "scripts": {
     "start": "nodemon src/server.ts",
     "start:dev": "DOTENV_CONFIG_PATH=.env.development npm start",
-    "start:prod": "DOTENV_CONFIG_PATH=.env.production npm start",
+    "start:prod": "DOTENV_CONFIG_PATH=.env.production node dist/server.js",
     "build": "rimraf ./dist && tsc",
     "deploy:dev": "DOTENV_CONFIG_PATH=.env.development npx ts-node src/deploy.ts",
-    "deploy:prod": "DOTENV_CONFIG_PATH=.env.production npx ts-node src/deploy.ts",
+    "deploy:prod": "DOTENV_CONFIG_PATH=.env.production node dist/deploy.js",
     "clean": "npx rimraf node_modules dist",
     "clean:install": "npm run clean && npm install &&  npm run init:prisma",
     "lint": "eslint src/**/* && prettier --write .",

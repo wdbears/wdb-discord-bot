@@ -27,8 +27,8 @@ RUN apk add --no-cache --virtual .build-deps git curl python3 build-base g++
 USER node
 COPY --chown=node:node --from=build /usr/src/app/node_modules/@prisma/client ./node_modules/@prisma/client
 COPY --chown=node:node --from=build /usr/src/app/node_modules/.prisma/client ./node_modules/.prisma/client
-COPY --chown=node:node --from=build /usr/src/app/dist ./src
+COPY --chown=node:node --from=build /usr/src/app/dist ./dist
 
 EXPOSE 8080
 
-CMD ["node", "src/server.js"]
+CMD ["node", "dist/server.js"]

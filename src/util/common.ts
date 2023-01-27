@@ -47,9 +47,11 @@ export const getAllFiles = (dirPath: string, parentDir: string, allFiles: string
 
 // Gets a map of all objects of a specified type residing in the given directory
 export const getAll = <T>(dir: string, isDefaultExport?: boolean): Map<string, T> => {
-  const allObjects = getAllFiles(`./src/${dir}`, `${dir}/`, []);
+  const prod = getEnvironmentType().isProd();
+  const parentDir = prod ? 'dist' : 'src';
+  const fileExtension = prod ? '.js' : '.ts';
   const fileToObjectMap = new Map<string, T>();
-  const fileExtension = getEnvironmentType().isProd() ? '.ts' : '.ts';
+  const allObjects = getAllFiles(`./${parentDir}/${dir}`, `${dir}/`, []);
 
   allObjects
     .filter((file) => file.endsWith(fileExtension))
