@@ -25,7 +25,7 @@ const messageCreate: IEvent = {
         channel.messages.fetch({ limit: 1 }).then((messages) => {
           const lastMessage = messages.first();
           if (lastMessage && !lastMessage.author.bot) {
-            channel.lastMessage?.react('<:afro:913940633931108372>');
+            channel.lastMessage?.react('<:afro:1068430031698788423>');
           }
         });
         break;
