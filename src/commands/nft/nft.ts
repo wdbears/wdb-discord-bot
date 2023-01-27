@@ -1,4 +1,5 @@
 import { Command, ICommand } from '../../models/Command';
+import { fetch } from '../../util/common';
 
 export const getInfo = async (collection: string) => {
   const api = `https://api.opensea.io/api/v1/collection/${collection}/stats?format=json`;
