@@ -1,17 +1,13 @@
 import 'dotenv/config';
 import { REST } from '@discordjs/rest';
 import { RESTPostAPIApplicationCommandsJSONBody, Routes } from 'discord-api-types/v9';
-import { getAll } from './util';
+import { getAll } from './util/common';
 import { Command } from './models/Command';
-import { isProdEnv } from './util';
-
-// Run this file with `yarn deploy` or `yarn deploy-prod` to update slash commands
 
 // Environment Variables
-const isProd = isProdEnv();
-const BOT_TOKEN = isProd ? process.env['BOT_TOKEN']! : process.env['BOT_TOKEN_TEST']!;
-const CLIENT_ID = isProd ? process.env['CLIENT_ID']! : process.env['CLIENT_ID_TEST']!;
-const GUILD_ID = isProd ? process.env['GUILD_ID']! : process.env['GUILD_ID_TEST']!;
+const BOT_TOKEN = process.env['BOT_TOKEN']!;
+const CLIENT_ID = process.env['CLIENT_ID']!;
+const GUILD_ID = process.env['GUILD_ID']!;
 
 const globalCommands: RESTPostAPIApplicationCommandsJSONBody[] = [];
 const guildCommands: RESTPostAPIApplicationCommandsJSONBody[] = [];
@@ -33,19 +29,23 @@ getAll<Command>('commands', true).forEach((command: Command, fileName: string) =
   }
 });
 
-const rest = new REST({ version: '9' }).setToken(BOT_TOKEN);
+const registerCommands = (
+  commandType: string,
+  commandJsonBodyArr: RESTPostAPIApplicationCommandsJSONBody[],
+  registeredCommands: string[]
+) => {
+  rest
+    .put(Routes.applicationGuildCommands(CLIENT_ID, GUILD_ID), { body: commandJsonBodyArr })
+    .then(() => console.log(`Done registering ${commandType} commands: ${registeredCommands}`));
+};
 
+const rest = new REST({ version: '9' }).setToken(BOT_TOKEN);
 try {
   if (registeredGlobalCommands.length > 0) {
-    rest
-      .put(Routes.applicationGuildCommands(CLIENT_ID, GUILD_ID), { body: globalCommands })
-      .then(() => console.log(`Done registering global commands: ${registeredGlobalCommands}`));
+    registerCommands('global', globalCommands, registeredGlobalCommands);
   }
-
   if (registeredGuildCommands.length > 0) {
-    rest
-      .put(Routes.applicationGuildCommands(CLIENT_ID, GUILD_ID), { body: guildCommands })
-      .then(() => console.log(`Done registering guild commands: ${registeredGuildCommands}`));
+    registerCommands('guild', guildCommands, registeredGuildCommands);
   }
 } catch (error) {
   console.log(error);

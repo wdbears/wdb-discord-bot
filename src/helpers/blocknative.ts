@@ -1,4 +1,4 @@
-import { fetch } from '../util';
+import { fetch } from '../util/common';
 
 export const getGas = async (): Promise<any> => {
   const api = 'https://api.blocknative.com/gasprices/blockprices';

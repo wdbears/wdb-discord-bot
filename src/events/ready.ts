@@ -2,8 +2,7 @@ import { TextChannel } from 'discord.js';
 import { client } from '../config/bot';
 import { getGasPrices } from '../helpers/etherscan';
 import IEvent from '../models/IEvent';
-
-const isProd = process.env['NODE_ENV'] === 'production';
+import { getEnvironmentType } from '../util/environmentType';
 
 const ready: IEvent = {
   name: 'ready',
@@ -11,7 +10,7 @@ const ready: IEvent = {
   execute: (): void => {
     console.log('Ready!');
 
-    if (isProd) {
+    if (getEnvironmentType().isProd()) {
       const channel = <TextChannel>client.channels.cache.get('930879495227969546');
       if (channel) channel.send(client.user?.username + ' has successfully deployed!');
     }

@@ -5,6 +5,8 @@ services:
       context: .
       target: build
       dockerfile: Dockerfile
+    env_file:
+      - .env.development
     ports:
       - 8080:8080
     volumes:

@@ -1,12 +1,13 @@
 /* eslint-disable @typescript-eslint/no-var-requires */
 import * as fs from 'fs';
+import { getEnvironmentType } from './environmentType';
 
-// Used for asynchronous timeouts
+/**
+ * Used for asynchronous timeouts
+ */
 export const wait = require('util').promisify(setTimeout);
 
-export const isProdEnv = () => process.env['NODE_ENV'] === 'production';
-
-// alternative way of importing node-fetch since it uses ESM3 (not supported in current config)
+// Alternative way of importing node-fetch since it uses ESM3 (not supported in current config)
 const _importDynamic = new Function('modulePath', 'return import(modulePath)');
 export async function fetch(...args: any) {
   const { default: fetch } = await _importDynamic('node-fetch');
@@ -18,7 +19,9 @@ export const removeFileExtension = (file: string, extension: string): string => 
   return file.substring(0, file.length - trimSize);
 };
 
-// Get all files in a directory (including its subdirectories)
+/**
+ * Get all files in a directory (including its subdirectories)
+ */
 export const getAllFiles = (dirPath: string, parentDir: string, allFiles: string[]): string[] => {
   fs.readdirSync(dirPath).forEach((file) => {
     const filePath = `${dirPath}/${file}`;
@@ -33,7 +36,11 @@ export const getAllFiles = (dirPath: string, parentDir: string, allFiles: string
     const subdirectoryPath = dirPath.split(parentDir)[1];
 
     // If it is, include the file's subdirectory to the path
-    subdirectoryPath ? allFiles.push(`${subdirectoryPath}/${file}`) : allFiles.push(file);
+    if (subdirectoryPath) {
+      allFiles.push(`${subdirectoryPath}/${file}`);
+    } else {
+      allFiles.push(file);
+    }
   });
   return allFiles;
 };
@@ -42,13 +49,13 @@ export const getAllFiles = (dirPath: string, parentDir: string, allFiles: string
 export const getAll = <T>(dir: string, isDefaultExport?: boolean): Map<string, T> => {
   const allObjects = getAllFiles(`./src/${dir}`, `${dir}/`, []);
   const fileToObjectMap = new Map<string, T>();
-  const fileExtension = isProdEnv() ? '.js' : '.ts';
+  const fileExtension = getEnvironmentType().isProd() ? '.ts' : '.ts';
 
   allObjects
     .filter((file) => file.endsWith(fileExtension))
     .forEach((file) => {
       file = removeFileExtension(file, fileExtension);
-      const object = require(`./${dir}/${file}`);
+      const object = require(`../${dir}/${file}`);
       if (isDefaultExport) {
         fileToObjectMap.set(file, object.default);
       } else {

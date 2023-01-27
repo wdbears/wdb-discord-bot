@@ -1,9 +1,6 @@
-import 'dotenv/config';
+// import 'dotenv/config';
 import { Message } from 'discord.js';
 import IEvent from '../models/IEvent';
-import { isProdEnv } from '../util';
-
-const DEVELOPER_USER_ID = isProdEnv() ? undefined : process.env['DEVELOPER_USER_ID']!;
 
 const messageCreate: IEvent = {
   name: 'messageCreate',
@@ -15,7 +12,7 @@ const messageCreate: IEvent = {
     const msgContent = message.content.toLowerCase();
 
     if (msgAuthor.bot) return;
-    if (DEVELOPER_USER_ID !== undefined && DEVELOPER_USER_ID !== msgAuthor.id) return; // TODO remove this logic by setting proper permissions for bots
+    // TODO add permissions check for users
 
     switch (msgContent) {
       case '!guard': {

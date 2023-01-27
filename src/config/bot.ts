@@ -1,7 +1,7 @@
 import { Command } from '../models/Command';
 import CustomClient from '../models/CustomClient';
 import IEvent from '../models/IEvent';
-import { getAll } from '../util';
+import { getAll } from '../util/common';
 
 export const client = new CustomClient();
 

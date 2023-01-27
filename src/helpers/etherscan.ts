@@ -1,6 +1,7 @@
-import { fetch, isProdEnv } from '../util';
+import { fetch } from '../util/common';
+import { getEnvironmentType } from '../util/environmentType';
 
-const apiKey = isProdEnv() ? process.env['ETHERSCAN_API_KEY']! : '';
+const apiKey = getEnvironmentType().isProd() ? process.env['ETHERSCAN_API_KEY']! : '';
 
 export const getGas = async () => {
   const api = `https://api.etherscan.io/api?module=gastracker&action=gasoracle&apikey=${apiKey}`;

@@ -1,7 +1,7 @@
 import { SlashCommandBuilder } from '@discordjs/builders';
 import { CommandInteraction, TextChannel } from 'discord.js';
 import { ICommand, Command } from '../models/Command';
-import { wait } from '../util';
+import { wait } from '../util/common';
 
 const prune: ICommand = {
   name: 'prune',

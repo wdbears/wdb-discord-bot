@@ -1,7 +1,7 @@
 import { SlashCommandBuilder } from '@discordjs/builders';
 import { CommandInteraction, MessageEmbed } from 'discord.js';
 import { Command, ICommand } from '../../models/Command';
-import { fetch } from '../../util';
+import { fetch } from '../../util/common';
 
 const price: ICommand = {
   name: 'price',

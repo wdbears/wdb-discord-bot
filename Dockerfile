@@ -17,9 +17,6 @@ RUN npm run build
 # <----- Stage 2 ------>
 FROM node@sha256:28bed508446db2ee028d08e76fb47b935defa26a84986ca050d2596ea67fd506 as production
 
-ARG NODE_ENV=production
-ENV NODE_ENV=${NODE_ENV}
-
 WORKDIR /usr/src/app
 
 COPY package*.json ./

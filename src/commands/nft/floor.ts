@@ -2,7 +2,7 @@ import { SlashCommandBuilder } from '@discordjs/builders';
 import { CommandInteraction, MessageEmbed } from 'discord.js';
 import { Command, ICommand } from '../../models/Command';
 import { collections, sortedCollections, collectionsMap } from '../../move-to-database/floor';
-import { fetch } from '../../util';
+import { fetch } from '../../util/common';
 
 const floor: ICommand = {
   name: 'floor',
