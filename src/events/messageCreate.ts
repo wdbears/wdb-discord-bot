@@ -1,12 +1,14 @@
 // import 'dotenv/config';
 import { Message } from 'discord.js';
 import IEvent from '../models/IEvent';
+import { getEmoji } from '../util/bot';
 
 const messageCreate: IEvent = {
   name: 'messageCreate',
   once: false,
   execute: async (message: Message) => {
     const channel = message.channel;
+    const guild = message.guild;
     const msgAuthor = message.author;
     const msgAuthorDisplayName = message.member?.displayName;
     const msgContent = message.content.toLowerCase();
@@ -22,28 +24,26 @@ const messageCreate: IEvent = {
       }
       case 'afroact': {
         await message.delete();
-        await channel.messages.fetch({ limit: 1 }).then((messages) => {
-          const lastMessage = messages.first();
-          if (lastMessage && !lastMessage.author.bot) {
-            const reactionEmoji = lastMessage.guild?.emojis.cache.find(
-              (emoji) => emoji.name === 'afro'
-            );
-            if (reactionEmoji != undefined) lastMessage.react(reactionEmoji);
-          }
-        });
+        const messages = await channel.messages.fetch({ limit: 1 });
+
+        const lastMessage = await messages.first();
+        if (!lastMessage || lastMessage.author.bot) return;
+
+        const reaction = getEmoji(guild, 'afro');
+        if (reaction != null) await lastMessage.react(reaction);
         break;
       }
       case 'afro': {
         await message.delete();
-        const afroEmoji = message.guild?.emojis.cache.find((emoji) => emoji.name === 'afro');
+        const afroEmoji = getEmoji(guild, 'afro');
         await channel.send(`${msgAuthorDisplayName} ${afroEmoji}'s you.`);
         break;
       }
       case 'police': {
         await message.delete();
-        await channel.send(
-          '<a:alert:930842484580446225> Wee woo, come here criminal <:homie_kiss:735213862453903421> <a:alert:930842484580446225>'
-        );
+        const alertEmoji = getEmoji(guild, 'alert');
+        const kissEmoji = getEmoji(guild, 'homie_kiss');
+        await channel.send(`${alertEmoji} Wee woo, come here criminal ${kissEmoji} ${alertEmoji}`);
         break;
       }
       case 'hdafro': {
