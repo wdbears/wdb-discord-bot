@@ -7,7 +7,6 @@ import { getEnvironmentType } from './util/environmentType';
 export const prisma = new PrismaClient();
 const envType = getEnvironmentType();
 
-// Setup listener on port 8080 (required for cloud deploys)
 const app = express();
 const port = process.env['PORT'];
 
@@ -15,6 +14,7 @@ app.get('/', (_req, res) => {
   res.send('Nom Nom is running properly!');
 });
 
+// Setup listener (required for cloud deploys)
 app.listen(port, () => {
   console.log(`Nom Nom listening at http://localhost:${port}`);
   console.log(`Environment:${envType.desc}`);

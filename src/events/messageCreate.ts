@@ -22,10 +22,13 @@ const messageCreate: IEvent = {
       }
       case 'afroact': {
         await message.delete();
-        channel.messages.fetch({ limit: 1 }).then((messages) => {
+        await channel.messages.fetch({ limit: 1 }).then((messages) => {
           const lastMessage = messages.first();
           if (lastMessage && !lastMessage.author.bot) {
-            channel.lastMessage?.react('<:afro:1068430031698788423>');
+            const reactionEmoji = lastMessage.guild?.emojis.cache.find(
+              (emoji) => emoji.name === 'afro'
+            );
+            if (reactionEmoji != undefined) lastMessage.react(reactionEmoji);
           }
         });
         break;
