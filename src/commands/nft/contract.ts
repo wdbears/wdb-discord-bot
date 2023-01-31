@@ -1,7 +1,6 @@
-import { SlashCommandBuilder } from '@discordjs/builders';
-import { CommandInteraction } from 'discord.js';
-import { getTransactions } from '../../helpers/etherscan';
+import { ChatInputCommandInteraction, SlashCommandBuilder } from 'discord.js';
 import { Command, ICommand } from '../../models/Command';
+import { getTransactions } from '../../helpers/etherscan';
 
 const contract: ICommand = {
   name: 'contract',
@@ -9,7 +8,8 @@ const contract: ICommand = {
   data: new SlashCommandBuilder().addStringOption((option) =>
     option.setName('address').setDescription('address to lookup').setRequired(true)
   ),
-  execute: async (interaction: CommandInteraction): Promise<void> => {
+  isEnabled: true,
+  execute: async (interaction: ChatInputCommandInteraction): Promise<void> => {
     try {
       const address: string = interaction.options.getString('address')!;
       let res = await getTransactions(address);

@@ -1,11 +1,11 @@
-import { CommandInteraction } from 'discord.js';
+import { ChatInputCommandInteraction } from 'discord.js';
 import { client } from '../config/bot';
 import IEvent from '../models/IEvent';
 
 const interactionCreate: IEvent = {
   name: 'interactionCreate',
   once: false,
-  execute: async (interaction: CommandInteraction): Promise<void> => {
+  execute: async (interaction: ChatInputCommandInteraction): Promise<void> => {
     if (!interaction.isCommand()) return;
 
     const command = client.commands.get(interaction.commandName);

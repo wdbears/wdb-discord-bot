@@ -1,6 +1,11 @@
-import { CommandInteraction, GuildMember, Role, TextChannel } from 'discord.js';
+import {
+  GuildMember,
+  Role,
+  TextChannel,
+  SlashCommandBuilder,
+  ChatInputCommandInteraction
+} from 'discord.js';
 import { Command, ICommand } from '../models/Command';
-import { SlashCommandBuilder } from '@discordjs/builders';
 import {
   DEFAULT_TIMEZONE_OFFSET,
   getFormattedTime,
@@ -36,7 +41,8 @@ const remind: ICommand = {
         .setDescription('The channel the reminder will be sent in')
         .setRequired(false)
     ),
-  execute: async (interaction: CommandInteraction): Promise<void> => {
+  isEnabled: true,
+  execute: async (interaction: ChatInputCommandInteraction): Promise<void> => {
     const eventName = interaction.options.getString('event')!;
     const userInputtedTime = interaction.options.getString('time');
 
@@ -52,7 +58,7 @@ const remind: ICommand = {
   }
 };
 
-const queueReminder = (interaction: CommandInteraction, time: Date, eventName: string) => {
+const queueReminder = (interaction: ChatInputCommandInteraction, time: Date, eventName: string) => {
   const channel = <TextChannel>interaction.options.getChannel('channel') || interaction.channel;
   const userMention = <GuildMember>interaction.options.getMentionable('user');
   const roleMention = <Role>interaction.options.getRole('role');

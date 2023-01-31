@@ -1,5 +1,4 @@
-import { SlashCommandBuilder } from '@discordjs/builders';
-import { CommandInteraction } from 'discord.js';
+import { ChatInputCommandInteraction, SlashCommandBuilder } from 'discord.js';
 import { Command, ICommand } from '../../models/Command';
 import { linkOptions } from '../../move-to-database/floor';
 
@@ -13,7 +12,8 @@ const links: ICommand = {
       .setRequired(true)
       .addChoices(...linkOptions)
   ),
-  execute: async (interaction: CommandInteraction): Promise<void> => {
+  isEnabled: true,
+  execute: async (interaction: ChatInputCommandInteraction): Promise<void> => {
     const link: string = interaction.options.getString('link')!;
     await interaction.reply(`${link}`);
   }

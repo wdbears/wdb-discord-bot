@@ -1,6 +1,6 @@
 export class AbstractCode {
-  private _id: number;
-  private _desc: string;
+  private readonly _id: number;
+  private readonly _desc: string;
 
   constructor(id: number, desc: string) {
     this._id = id;

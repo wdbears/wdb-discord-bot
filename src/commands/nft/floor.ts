@@ -1,5 +1,4 @@
-import { SlashCommandBuilder } from '@discordjs/builders';
-import { CommandInteraction, MessageEmbed } from 'discord.js';
+import { ChatInputCommandInteraction, EmbedBuilder, SlashCommandBuilder } from 'discord.js';
 import { Command, ICommand } from '../../models/Command';
 import { collections, sortedCollections, collectionsMap } from '../../move-to-database/floor';
 import { fetch } from '../../util/common';
@@ -33,7 +32,8 @@ const floor: ICommand = {
             .addChoices(...collections.filter((c) => c.isBlueChip))
         )
     ),
-  execute: async (interaction: CommandInteraction): Promise<void> => {
+  isEnabled: true,
+  execute: async (interaction: ChatInputCommandInteraction): Promise<void> => {
     const subcommand = interaction.options.getSubcommand();
 
     const startTime = Date.now();
@@ -44,7 +44,7 @@ const floor: ICommand = {
       await interaction.deferReply();
       const prices = await getAllFloorPrices();
       updateEmbed(prices, resultEmbed, startTime);
-      interaction.editReply({ embeds: [resultEmbed] });
+      await interaction.editReply({ embeds: [resultEmbed] });
       return;
     }
 
@@ -64,7 +64,7 @@ const floor: ICommand = {
         resultEmbed.setThumbnail(await imageURL);
       }
 
-      interaction.reply({ embeds: [resultEmbed] });
+      await interaction.reply({ embeds: [resultEmbed] });
     }
   }
 };
@@ -97,7 +97,7 @@ async function getAllFloorPrices(): Promise<any[]> {
 }
 
 const createEmbed = () => {
-  return new MessageEmbed()
+  return new EmbedBuilder()
     .setColor('#0099ff')
     .setTitle('Floor Prices')
     .setURL('https://opensea.io')
@@ -106,12 +106,12 @@ const createEmbed = () => {
     .setTimestamp();
 };
 
-const updateEmbed = (collectionToFloorMap: any[], embed: MessageEmbed, startTime: number) => {
+const updateEmbed = (collectionToFloorMap: any[], embed: EmbedBuilder, startTime: number) => {
   let res = '';
   collectionToFloorMap.forEach((entry) => {
     try {
       res += `**${entry['name']}** - ${entry['price']}\n`;
-      // embed.addField(entry['name'], entry['price'].toString(), false);
+      embed.addFields(entry['name'], entry['price'].toString(), false);
     } catch (error) {
       console.log('Issue with ' + entry);
     }

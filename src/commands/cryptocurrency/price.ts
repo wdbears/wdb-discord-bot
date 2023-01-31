@@ -1,5 +1,4 @@
-import { SlashCommandBuilder } from '@discordjs/builders';
-import { CommandInteraction, MessageEmbed } from 'discord.js';
+import { ChatInputCommandInteraction, EmbedBuilder, SlashCommandBuilder } from 'discord.js';
 import { Command, ICommand } from '../../models/Command';
 import { fetch } from '../../util/common';
 
@@ -12,10 +11,11 @@ const price: ICommand = {
       .setDescription('ticker(s) for which price is being fetched for')
       .setRequired(true)
   ),
-  execute: async (interaction: CommandInteraction): Promise<void> => {
+  isEnabled: true,
+  execute: async (interaction: ChatInputCommandInteraction): Promise<void> => {
     try {
       const coins: string[] = interaction.options.getString('tickers')!.split(/[ ,]+/);
-      const result: MessageEmbed[] = [];
+      const result: EmbedBuilder[] = [];
 
       for (const coin of coins) {
         result.push(await getCrypto(coin));
@@ -76,7 +76,7 @@ const getEmbed = (coin: { name: string; price: string }, isBackup?: boolean) => 
 
   const api = isBackup ? cryptoCompare : coinGecko;
 
-  return new MessageEmbed()
+  return new EmbedBuilder()
     .setColor('#0099ff')
     .setTitle(coin.name.toUpperCase())
     .setURL(api.url)
@@ -85,7 +85,7 @@ const getEmbed = (coin: { name: string; price: string }, isBackup?: boolean) => 
     .setTimestamp();
 };
 
-export const getCrypto = async (coin: string): Promise<MessageEmbed> => {
+export const getCrypto = async (coin: string): Promise<EmbedBuilder> => {
   let price = await getPrice(coin);
   if (Object.keys(await price).length === 0) {
     price = await getPrice(coin, true);

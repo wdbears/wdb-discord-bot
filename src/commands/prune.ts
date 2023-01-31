@@ -1,5 +1,4 @@
-import { SlashCommandBuilder } from '@discordjs/builders';
-import { CommandInteraction, TextChannel } from 'discord.js';
+import { ChatInputCommandInteraction, TextChannel, SlashCommandBuilder } from 'discord.js';
 import { ICommand, Command } from '../models/Command';
 import { wait } from '../util/common';
 
@@ -9,7 +8,9 @@ const prune: ICommand = {
   data: new SlashCommandBuilder().addIntegerOption((option) =>
     option.setName('amount').setDescription('the number of messages to delete').setRequired(true)
   ),
-  execute: async (interaction: CommandInteraction): Promise<void> => {
+  isEnabled: true,
+  execute: async (interaction: ChatInputCommandInteraction): Promise<void> => {
+    if (!interaction.isChatInputCommand()) return;
     const amount = interaction.options.getInteger('amount')!;
 
     if (Number.isNaN(amount)) throw new Error(`${amount} is an invalid number`);
