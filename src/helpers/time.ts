@@ -21,7 +21,7 @@ export const parseTime = (time: string) => {
   }
 
   const parsedDate = new Date();
-  parsedDate.setHours(parsedHours + 5);
+  parsedDate.setHours(parsedHours);
   parsedDate.setMinutes(parsedMinutes);
   parsedDate.setSeconds(0);
 
